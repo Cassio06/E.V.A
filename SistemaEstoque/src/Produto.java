@@ -1,11 +1,11 @@
-public class ProdutoEstoque {
+public class Produto {
     private String nome;
     private double precoVenda;
     private double precoCompra;
     private int quantidade;
 
 
-    public ProdutoEstoque(String nome, double precoVenda, double precoCompra, int quantidade){
+    public Produto(String nome, double precoCompra, double precoVenda, int quantidade){
         this.nome = nome;
         this.precoVenda = precoVenda;
         this.precoCompra = precoCompra;
@@ -14,6 +14,7 @@ public class ProdutoEstoque {
     }
 
     public String getNome(){
+
         return nome;
     }
     public double getPrecoVenda(){
@@ -29,7 +30,7 @@ public class ProdutoEstoque {
 
     }
 
-    public void adicionarEstoque(int qtd){
+    public void repor(int qtd){
         if(qtd > 0){
             quantidade += qtd;
         } else {
@@ -38,12 +39,16 @@ public class ProdutoEstoque {
         }
 
     }
-    public void removerEstoque(int qtd){
+    public boolean vender(int qtd){
         if(qtd > 0 && qtd <= quantidade){
             quantidade -= qtd;
-
-        }else {
+            return true;
+        }if(qtd<=0) {
             System.out.println("Valor invalido");
+            return false;
+        }else {
+            System.out.println("Estoque insuficiente");
+            return false;
         }
     }
 
@@ -66,15 +71,15 @@ public class ProdutoEstoque {
         return lucroProduto() * getQuantidade();
 
     }
-    public void exibirProduto(){
+    public void exibirResumo(){
         System.out.println("Produto: " + nome);
         System.out.println("Preço Venda: " + precoVenda);
         System.out.println("Preco Pago: " + precoCompra);
         System.out.println("Quantidade: " + quantidade);
-        System.out.println("Valor Total em Estoque: " + valorTotalEmEstoque());
-        System.out.println("Custo Total em Estoque: " + custoTotalEmEstoque());
-        System.out.println("Lucro por unidade: " + lucroProduto());
-        System.out.println("Lucro Total: " + lucroTotalPossivel());
+        System.out.printf("Valor Total em Estoque: %.2f%n", valorTotalEmEstoque());
+        System.out.printf("Custo Total em Estoque: %.2f%n", custoTotalEmEstoque());
+        System.out.printf("Lucro por unidade: %.2f%n", lucroProduto());
+        System.out.printf("Lucro Total: %.2f%n", lucroTotalPossivel());
 
     }
 }
