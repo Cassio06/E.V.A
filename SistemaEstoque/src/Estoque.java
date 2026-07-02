@@ -61,7 +61,6 @@ public class Estoque {
 
             if(vendaRealizada){
                 System.out.println("Venda processada para: " + produto.getNome());
-                produto.vender(qtd);
             }
 
         } else{

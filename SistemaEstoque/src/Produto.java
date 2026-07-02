@@ -73,8 +73,8 @@ public class Produto {
     }
     public void exibirResumo(){
         System.out.println("Produto: " + nome);
-        System.out.println("Preço Venda: " + precoVenda);
-        System.out.println("Preco Pago: " + precoCompra);
+        System.out.printf("Preço Venda: %.2f%n", precoVenda);
+        System.out.printf("Preco Pago: %.2f%n", precoCompra);
         System.out.println("Quantidade: " + quantidade);
         System.out.printf("Valor Total em Estoque: %.2f%n", valorTotalEmEstoque());
         System.out.printf("Custo Total em Estoque: %.2f%n", custoTotalEmEstoque());
