@@ -19,6 +19,7 @@ public class Main{
             System.out.println("3 - Vender Produto");
             System.out.println("4 - Repor Produto");
             System.out.println("5 - Resumo Geral");
+            System.out.println("6 - Editar Produto");
             System.out.println("0 - Sair");
             System.out.print("Escolha uma opção: ");
 
@@ -43,10 +44,12 @@ public class Main{
                     } while (precoVenda < precoPago);
 
                     int quantidade = lerIntPositivo("Quantidade: ");
-                    input.nextLine();
+
+                    int estoqueMinimo = lerIntPositivo("Estoque Minimo: ");
 
 
-                    Produto produto = new Produto(nome, precoPago, precoVenda, quantidade);
+
+                    Produto produto = new Produto(nome, precoPago, precoVenda, quantidade, estoqueMinimo);
                     estoque.adicionarProduto(produto);
 
                     break;
@@ -89,11 +92,54 @@ public class Main{
                 case 5:
                     estoque.exibirResumoGeral();
                     break;
+                case 6:
+                    System.out.println("=====EDITAR PRODUTO=====");
+                    String nomeProdutoEditar = lerTexto("Produto que deseja Editar: ");
+                    boolean edicaoCancelada = false;
+                    Produto produtoEditar = estoque.buscarProduto(nomeProdutoEditar);
+                    while(produtoEditar == null){
+                        System.out.println("Produto não encontrado.");
+                        nomeProdutoEditar = lerTexto("Produto que deseja Editar(Caso deseje sair digite 0): ");
+                        if (nomeProdutoEditar.equals("0")){
+                            edicaoCancelada = true;
+                            break;
+                        }
+                        produtoEditar = estoque.buscarProduto(nomeProdutoEditar);
+
+                    }
+                    if(!edicaoCancelada) {
+
+                        System.out.println("1-Editar Preço de Compra");
+                        System.out.println("2-Editar Preço de Venda");
+                        System.out.println("3-Editar Estoque Minimo");
+                        System.out.println("0 - Sair");
+
+                        int opcaoEditar = lerIntZeroOuPositivo("");
+                        switch (opcaoEditar) {
+                            case 1:
+                                produtoEditar.alterarPrecoCompra(lerDoublePositivo("Novo preço de compra: "));
+                                break;
+                            case 2:
+                                produtoEditar.alterarPrecoVenda(lerDoublePositivo("Novo preço de Venda: "));
+                                break;
+                            case 3:
+                                produtoEditar.alterarEstoqueMinimo(lerIntPositivo("Novo estoque minimo: "));
+                                break;
+                            case 0:
+                                System.out.println("Saindo");
+                                break;
+                            default:
+                                System.out.println("Opção inválida");
+                        }
+
+                    }
+                    break;
                 case 0:
                     System.out.println("Saindo");
                     break;
                 default:
                     System.out.println("Opção inválida.");
+
             }
         } while(opcao != 0);
         input.close();

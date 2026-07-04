@@ -38,7 +38,7 @@ public class Estoque {
     }
     public Produto buscarProduto(String nome){
         for (Produto produto : produtos){
-            if (produto.getNome().equalsIgnoreCase(nome)) {
+            if (produto.getNome().trim().equalsIgnoreCase(nome.trim())) {
                 return produto;
             }
         }
@@ -47,24 +47,37 @@ public class Estoque {
 
     public void reporProduto(String nome, int qtd){
         Produto produto = buscarProduto(nome);
-        if(produto != null && qtd > 0){
-            System.out.println("Reposição de produto feita para: " + produto.getNome());
-            produto.repor(qtd);
+
+
+        if(produto == null){
+            System.out.println("Produto não encontrado.");
+            return;
+        }
+
+        boolean reposicaoRealizada = produto.repor(qtd);
+
+        if(reposicaoRealizada){
+            System.out.println("Reposição de produto feita para " + produto.getNome());
+
+        }else{
+            System.out.println("Quantidade inválida para reposição");
         }
     }
     public void venderProduto(String nome, int qtd){
         Produto produto = buscarProduto(nome);
 
-        if (produto != null){
-            boolean vendaRealizada = produto.vender(qtd);
-
-
-            if(vendaRealizada){
-                System.out.println("Venda processada para: " + produto.getNome());
-            }
-
-        } else{
+        if(produto == null){
             System.out.println("Produto não encontrado");
+            return;
+        }
+        boolean vendaRealizada = produto.vender(qtd);
+
+        if(vendaRealizada){
+            System.out.println("Venda processada para: " + produto.getNome());
+
+        }else{
+            System.out.println("Venda não realizada. Verifique a quantidade");
+
         }
     }
     public double valorTotaldoEstoque(){
