@@ -66,7 +66,7 @@ public class Produto {
     }
 
     public boolean alterarPrecoCompra(double novoPrecoCompra){
-        if(novoPrecoCompra <= 0){
+        if(novoPrecoCompra <= 0 || novoPrecoCompra > precoVenda){
             return false;
         }
         this.precoCompra = novoPrecoCompra;
@@ -74,7 +74,7 @@ public class Produto {
     }
 
     public boolean alterarPrecoVenda(double novoPrecoVenda){
-        if(novoPrecoVenda <= 0){
+        if(novoPrecoVenda <= 0 || novoPrecoVenda < precoCompra){
             return false;
         }
         this.precoVenda = novoPrecoVenda;
@@ -87,6 +87,26 @@ public class Produto {
 
         }
         this.estoqueMinimo = novoEstoqueMinimo;
+        return true;
+    }
+
+    public boolean alterarNome(String novoNome){
+        if(novoNome.trim().isEmpty()){
+            System.out.println("Nome não pode ficar vazio");
+            return false;
+        }
+        this.nome = novoNome.trim();
+        return true;
+
+    }
+
+    public boolean alterarEstoque(int novaQuantidade){
+        if(novaQuantidade < 0){
+            System.out.println("Quantidade Inválida.");
+            return false;
+
+        }
+        this.quantidade = novaQuantidade;
         return true;
     }
 
@@ -111,16 +131,20 @@ public class Produto {
     public void exibirResumo() {
         System.out.println("Produto: " + nome);
         System.out.printf("Preço Venda: %.2f%n", precoVenda);
-        System.out.printf("Preco Pago: %.2f%n", precoCompra);
-        System.out.println("Quantidade: " + quantidade);
+        System.out.printf("Preço Pago: %.2f%n", precoCompra);
+        System.out.println("Estoque: " + quantidade);
+        System.out.println("Estoque Minimo: " + estoqueMinimo);
         System.out.printf("Valor Total em Estoque: %.2f%n", valorTotalEmEstoque());
         System.out.printf("Custo Total em Estoque: %.2f%n", custoTotalEmEstoque());
         System.out.printf("Lucro por unidade: %.2f%n", lucroProduto());
         System.out.printf("Lucro Total: %.2f%n", lucroTotalPossivel());
 
-        if (estaComBaixoEstoque()) {
-            System.out.println("⚠ Baixo estoque!");
 
+        if (estaComBaixoEstoque()) {
+            System.out.println("Status: ⚠ Baixo estoque!");
+
+        }else{
+            System.out.println("Status: Estoque Ok.");
         }
 
     }

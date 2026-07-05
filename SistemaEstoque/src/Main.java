@@ -21,11 +21,9 @@ public class Main{
             System.out.println("5 - Resumo Geral");
             System.out.println("6 - Editar Produto");
             System.out.println("0 - Sair");
-            System.out.print("Escolha uma opção: ");
 
 
-            opcao = input.nextInt();
-            input.nextLine();
+            opcao = lerIntZeroOuPositivo("Escolha uma opção: ");
 
             switch(opcao) {
                 case 1:
@@ -45,7 +43,7 @@ public class Main{
 
                     int quantidade = lerIntPositivo("Quantidade: ");
 
-                    int estoqueMinimo = lerIntPositivo("Estoque Minimo: ");
+                    int estoqueMinimo = lerIntZeroOuPositivo("Estoque Minimo: ");
 
 
 
@@ -80,12 +78,9 @@ public class Main{
 
                     break;
                 case 4:
-                    System.out.println("Nome do produto para repor: ");
-                    String nomeReposicao = input.nextLine();
+                    String nomeReposicao = lerTexto("Nome do produto para repor: ");
 
-                    System.out.println("Quantidade para repor: ");
-                    int quantidadeReposicao = input.nextInt();
-                    input.nextLine();
+                    int quantidadeReposicao = lerIntPositivo("Quantidade para repor:" );
 
                     estoque.reporProduto(nomeReposicao, quantidadeReposicao);
                     break;
@@ -108,22 +103,48 @@ public class Main{
 
                     }
                     if(!edicaoCancelada) {
-
-                        System.out.println("1-Editar Preço de Compra");
-                        System.out.println("2-Editar Preço de Venda");
-                        System.out.println("3-Editar Estoque Minimo");
-                        System.out.println("0 - Sair");
+                        System.out.println("========================");
+                        System.out.println("1-Editar Preço de Compra.");
+                        System.out.println("2-Editar Preço de Venda.");
+                        System.out.println("3-Editar Estoque Minimo.");
+                        System.out.println("4-Editar Nome.");
+                        System.out.println("5-Editar Estoque.");
+                        System.out.println("0-Sair");
+                        System.out.println("========================");
 
                         int opcaoEditar = lerIntZeroOuPositivo("");
                         switch (opcaoEditar) {
                             case 1:
-                                produtoEditar.alterarPrecoCompra(lerDoublePositivo("Novo preço de compra: "));
+
+                                boolean alterouCompra = produtoEditar.alterarPrecoCompra(lerDoublePositivo("Novo preço de compra: "));
+                                if(alterouCompra){
+                                    System.out.println("Preço de compra alterado com sucesso!!");
+                                }else{
+                                    System.out.println("Preço de compra inválido. Ele não pode ser maior que o preço de venda.");
+                                }
+
                                 break;
+
                             case 2:
-                                produtoEditar.alterarPrecoVenda(lerDoublePositivo("Novo preço de Venda: "));
+                                boolean alterouVenda = produtoEditar.alterarPrecoVenda(lerDoublePositivo("Novo preço de Venda: "));
+                                if(alterouVenda){
+                                    System.out.println("Preço de venda alterado com sucesso!!");
+                                }else{
+                                    System.out.println("Preço de venda inválido. Ele não pode ser menor que o preço de compra.");
+                                }
+
                                 break;
                             case 3:
-                                produtoEditar.alterarEstoqueMinimo(lerIntPositivo("Novo estoque minimo: "));
+                                produtoEditar.alterarEstoqueMinimo(lerIntZeroOuPositivo("Novo estoque minimo: "));
+                                System.out.println("Estoque Minimo alterado com sucesso!!");
+                                break;
+                            case 4:
+                                produtoEditar.alterarNome(lerTexto("Novo nome do Produto: "));
+                                System.out.println("Nome alterado com sucesso!!");
+                                break;
+                            case 5:
+                                produtoEditar.alterarEstoque(lerIntZeroOuPositivo("Novo Estoque: "));
+                                System.out.println("Estoque alterado com sucesso!!");
                                 break;
                             case 0:
                                 System.out.println("Saindo");
