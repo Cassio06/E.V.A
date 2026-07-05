@@ -29,7 +29,10 @@ public class Main{
                 case 1:
 
                     String nome = lerTexto("Nome do produto: ");
-
+                    while(estoque.buscarProduto(nome.trim()) != null){
+                        System.out.println("Produto já cadastrado");
+                        nome = lerTexto("Nome do produto: ");
+                    }
                     double precoPago = lerDoublePositivo("Preço pago: ");
 
                     double precoVenda;
@@ -66,6 +69,10 @@ public class Main{
                             System.out.println("Produto não encontrado. Digite novamente.");
                         }
                     }
+                    if(produtoVenda.getQuantidade() == 0){
+                        System.out.println("Produto sem estoque.");
+                        break;
+                    }
 
                     int quantidadeVenda = lerIntPositivo("Quantidade vendida: ");
 
@@ -79,7 +86,12 @@ public class Main{
                     break;
                 case 4:
                     String nomeReposicao = lerTexto("Nome do produto para repor: ");
-
+                    Produto produtoReposicao = estoque.buscarProduto(nomeReposicao);
+                    while(produtoReposicao == null){
+                        System.out.println("Produto não existe.");
+                        nomeReposicao = lerTexto("Nome do produto para repor: ");
+                        produtoReposicao = estoque.buscarProduto(nomeReposicao);
+                    }
                     int quantidadeReposicao = lerIntPositivo("Quantidade para repor:" );
 
                     estoque.reporProduto(nomeReposicao, quantidadeReposicao);
@@ -139,7 +151,15 @@ public class Main{
                                 System.out.println("Estoque Minimo alterado com sucesso!!");
                                 break;
                             case 4:
-                                produtoEditar.alterarNome(lerTexto("Novo nome do Produto: "));
+                                String novoNome = lerTexto("Novo nome do produto: ");
+                                Produto produtoComEsseNome = estoque.buscarProduto(novoNome);
+
+                                while(produtoComEsseNome != null && produtoComEsseNome != produtoEditar){
+                                    System.out.println("Nome pertence a outro produto.");
+                                    novoNome = lerTexto("Novo nome do produto: ");
+                                    produtoComEsseNome = estoque.buscarProduto(novoNome);
+                                }
+                                produtoEditar.alterarNome(novoNome);
                                 System.out.println("Nome alterado com sucesso!!");
                                 break;
                             case 5:
