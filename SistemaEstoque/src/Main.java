@@ -252,4 +252,79 @@ public class Main{
             }
         }
     }
+
+    public static boolean isCancelar(String entrada){
+        return entrada.equalsIgnoreCase("cancelar") || entrada.equals("0");
+    }
+    public static String lerTextoOuCancelar(String mensagem){
+        while(true){
+            System.out.println(mensagem);
+            String entrada = input.nextLine().trim();
+
+            if(isCancelar(entrada)){
+                return null;
+
+            }
+
+            if(!entrada.isEmpty()){
+                return entrada;
+            }
+
+            System.out.println("Entrada inválida. O texto não pode ficar vazio.");
+
+        }
+
+
+    }
+    public static Double lerDoublePositivoOuCancelar(String mensagem){
+        while (true) {
+            System.out.println(mensagem);
+            String entrada = input.nextLine().trim();
+
+            if(isCancelar(entrada)){
+                return null;
+            }
+
+            entrada = entrada.replace(",", ".");
+
+            try{
+                double valor = Double.parseDouble(entrada);
+
+                if (valor > 0){
+                    return valor;
+                }
+
+                System.out.println("Valor inválido. Digite um número maior que zero.");
+
+
+            }catch(NumberFormatException e){
+                System.out.println("Entrada inválida. Digite um número válido.");
+            }
+        }
+    }
+    public static Integer lerIntPositivoOuCancelar(String mensagem){
+        while (true) {
+            System.out.println(mensagem);
+            String entrada = input.nextLine().trim();
+
+            if(isCancelar(entrada)){
+                return null;
+            }
+
+
+            try{
+                int valor = Integer.parseInt(entrada);
+
+                if (valor > 0){
+                    return valor;
+                }
+
+                System.out.println("Valor inválido. Digite um número maior que zero.");
+
+
+            }catch(NumberFormatException e){
+                System.out.println("Entrada inválida. Digite um número válido.");
+            }
+        }
+    }
 }
