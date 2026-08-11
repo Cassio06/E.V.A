@@ -6,12 +6,37 @@ public class Produto {
     private int estoqueMinimo;
 
     public Produto(String nome, double precoCompra, double precoVenda, int quantidade, int estoqueMinimo){
-        this.nome = nome;
+        if(nome == null || nome.isBlank()){
+            throw new IllegalArgumentException("O nome não pode estar vazio.");
+
+        }
+        if (precoCompra <=0 ){
+            throw new IllegalArgumentException("O Preço de compra não pode ser igual ou inferior a zero.");
+
+        }
+        if (precoVenda <= 0){
+            throw new IllegalArgumentException("O Preço de venda não pode ser igual ou inferior a zero.");
+
+        }
+        if (precoVenda < precoCompra){
+            throw new IllegalArgumentException("O Preço de venda não pode ser menor que o preço de compra.");
+
+        }
+        if (quantidade < 0){
+            throw new IllegalArgumentException("A quantidade em estoque não pode ser menor do que zero.");
+
+        }
+        if (estoqueMinimo < 0){
+            throw new IllegalArgumentException("O estoque minimo não pode ser menor do que zero.");
+        }
+        this.nome = nome.trim();
         this.precoVenda = precoVenda;
         this.precoCompra = precoCompra;
         this.quantidade = quantidade;
         this.estoqueMinimo = estoqueMinimo;
     }
+
+
 
     public String getNome(){
 
@@ -29,7 +54,12 @@ public class Produto {
         return quantidade;
 
     }
-
+    public enum ResultadoVenda{
+        SUCESSO,
+        NUMERO_INVALIDO,
+        ESTOQUE_INSUFICIENTE,
+        PRODUTO_NAO_ENCONTRADO
+    }
     public int getEstoqueMinimo(){
         return estoqueMinimo;
     }
@@ -48,20 +78,18 @@ public class Produto {
 
 
     }
-    public boolean vender(int qtd){
+    public ResultadoVenda vender(int qtd){
         if (qtd <= 0){
-            System.out.println("Quantidade inválida para venda");
-            return false;
+            return ResultadoVenda.NUMERO_INVALIDO;
 
         }
         if (qtd > quantidade){
-            System.out.println("Estoque insuficiente. Quantidade disponível: " + quantidade);
-            return false;
+            return ResultadoVenda.ESTOQUE_INSUFICIENTE;
 
         }
 
         quantidade -= qtd;
-        return true;
+        return ResultadoVenda.SUCESSO;
 
     }
 
@@ -91,8 +119,7 @@ public class Produto {
     }
 
     public boolean alterarNome(String novoNome){
-        if(novoNome.trim().isEmpty()){
-            System.out.println("Nome não pode ficar vazio");
+        if(novoNome == null || novoNome.isBlank()){
             return false;
         }
         this.nome = novoNome.trim();
@@ -102,7 +129,6 @@ public class Produto {
 
     public boolean alterarEstoque(int novaQuantidade){
         if(novaQuantidade < 0){
-            System.out.println("Quantidade Inválida.");
             return false;
 
         }
@@ -128,25 +154,4 @@ public class Produto {
         return lucroProduto() * getQuantidade();
 
     }
-    public void exibirResumo() {
-        System.out.println("Produto: " + nome);
-        System.out.printf("Preço Venda: %.2f%n", precoVenda);
-        System.out.printf("Preço Pago: %.2f%n", precoCompra);
-        System.out.println("Estoque: " + quantidade);
-        System.out.println("Estoque Minimo: " + estoqueMinimo);
-        System.out.printf("Valor Total em Estoque: %.2f%n", valorTotalEmEstoque());
-        System.out.printf("Custo Total em Estoque: %.2f%n", custoTotalEmEstoque());
-        System.out.printf("Lucro por unidade: %.2f%n", lucroProduto());
-        System.out.printf("Lucro Total: %.2f%n", lucroTotalPossivel());
-
-
-        if (estaComBaixoEstoque()) {
-            System.out.println("Status: ⚠ Baixo estoque!");
-
-        }else{
-            System.out.println("Status: Estoque Ok.");
-        }
-
-    }
-
 }

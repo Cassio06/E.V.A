@@ -1,86 +1,69 @@
-import java.lang.reflect.Array;
+import java.util.List;
 import java.util.ArrayList;
 
 
 
 public class Estoque {
-    private ArrayList<Produto> produtos;
+    private final List<Produto> produtos;
 
     public Estoque(){
         produtos = new ArrayList<>();
 
     }
 
-    public void adicionarProduto(Produto produto){
+    public List<Produto> getProdutos(){
+        return new ArrayList<>(produtos);
+    }
+
+    public boolean adicionarProduto(Produto produto){
+        if(produto == null){
+            return false;
+        }
         Produto produtoExistente = buscarProduto(produto.getNome());
+
         if(produtoExistente != null){
-            System.out.println("Produto já cadastrado: " + produto.getNome());
-            return;
+            return false;
 
         }
 
             produtos.add(produto);
-            System.out.println("Produto adicionado: " + produto.getNome());
+            return true;
 
     }
 
-    public void listarProdutos(){
-        if (produtos.isEmpty()){
-            System.out.println("Estoque Vazio.");
-
-        } else{
-            for (Produto produto : produtos){
-                produto.exibirResumo();
-                System.out.println("-----------------------");
-            }
-        }
-
-    }
     public Produto buscarProduto(String nome){
+        if(nome == null || nome.isBlank()){
+            return null;
+        }
         for (Produto produto : produtos){
+
             if (produto.getNome().trim().equalsIgnoreCase(nome.trim())) {
                 return produto;
             }
         }
+
         return null;
     }
 
-    public void reporProduto(String nome, int qtd){
+    public boolean reporProduto(String nome, int qtd){
         Produto produto = buscarProduto(nome);
 
 
         if(produto == null){
-            System.out.println("Produto não encontrado.");
-            return;
+            return false;
         }
 
-        boolean reposicaoRealizada = produto.repor(qtd);
-
-        if(reposicaoRealizada){
-            System.out.println("Reposição de produto feita para " + produto.getNome());
-
-        }else{
-            System.out.println("Quantidade inválida para reposição");
-        }
+        return produto.repor(qtd);
     }
-    public void venderProduto(String nome, int qtd){
+    public Produto.ResultadoVenda venderProduto(String nome, int qtd){
         Produto produto = buscarProduto(nome);
 
         if(produto == null){
-            System.out.println("Produto não encontrado");
-            return;
+            return Produto.ResultadoVenda.PRODUTO_NAO_ENCONTRADO;
         }
-        boolean vendaRealizada = produto.vender(qtd);
-
-        if(vendaRealizada){
-            System.out.println("Venda processada para: " + produto.getNome());
-
-        }else{
-            System.out.println("Venda não realizada. Verifique a quantidade");
-
-        }
+        return produto.vender(qtd);
     }
-    public double valorTotaldoEstoque(){
+    public double valorTotalDoEstoque(){
         double total = 0;
 
         for(Produto produto : produtos){
@@ -89,14 +72,14 @@ public class Estoque {
         return total;
 
     }
-    public double custoTotaldoEstoque(){
+    public double custoTotalDoEstoque(){
         double total = 0;
         for(Produto produto : produtos){
             total += produto.custoTotalEmEstoque();
         }
         return total;
     }
-    public double lucroTotaldoEstoque(){
+    public double lucroTotalDoEstoque(){
         double total = 0;
         for(Produto produto : produtos){
             total += produto.lucroTotalPossivel();
@@ -106,12 +89,5 @@ public class Estoque {
 
     }
 
-    public void exibirResumoGeral(){
-        System.out.println("=====RESUMO GERAL DO ESTOQUE=====");
-        System.out.printf("Valor total em estoque: R$ %.2f%n", valorTotaldoEstoque());
-        System.out.printf("Custo total em estoque: R$ %.2f%n", custoTotaldoEstoque());
-        System.out.printf("Lucro total possivel: R$ %.2f%n", lucroTotaldoEstoque());
-        System.out.println("=================================");
-    }
 
 }
