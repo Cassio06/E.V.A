@@ -1,144 +1,329 @@
-# EVA - Estoque Inteligente Mark 1
+# E.V.A. — Estoque Inteligente | MARK I
 
-A **EVA** é um projeto pessoal de assistente/sistema de organização desenvolvido em Java, criado inicialmente como um módulo de controle de estoque para estudo de Programação Orientada a Objetos, lógica de programação e construção gradual de sistemas reais.
+A **E.V.A.** é um projeto pessoal desenvolvido em Java com o objetivo de evoluir gradualmente de um sistema de organização e gerenciamento para uma assistente pessoal mais completa.
 
-Este repositório representa a **Mark 1** da EVA: a primeira versão funcional do sistema, focada em cadastro, controle e gerenciamento básico de produtos.
+O projeto começou como um sistema de controle de estoque voltado ao estudo e à aplicação prática de conceitos de **Programação Orientada a Objetos, lógica de programação e organização de software**.
+
+Este repositório representa a **MARK I da E.V.A.**, a primeira versão funcional e estruturada do sistema.
+
+---
 
 ## Objetivo do Projeto
 
-O objetivo da EVA é evoluir aos poucos de um simples sistema de estoque para uma assistente pessoal mais completa, capaz de ajudar em organização, controle financeiro, revenda, produtividade e tomada de decisão.
+A proposta da E.V.A. é evoluir aos poucos de um sistema simples de estoque para uma plataforma pessoal capaz de auxiliar em áreas como:
 
-Nesta primeira fase, o foco é construir uma base sólida em Java, aplicando conceitos como:
+* Organização
+* Controle financeiro
+* Revenda
+* Produtividade
+* Automação
+* Tomada de decisão
 
-- Classes e objetos
-- Encapsulamento
-- Métodos
-- Listas de objetos
-- Validação de entrada
-- Controle de fluxo
-- Regras de negócio
-- Organização de código
+Na MARK I, o principal objetivo foi construir uma base sólida em Java e aprender a estruturar um sistema real de forma progressiva.
 
-## Funcionalidades Atuais
+Durante o desenvolvimento foram aplicados conceitos como:
 
-A Mark 1 atualmente possui:
+* Classes e objetos
+* Encapsulamento
+* Métodos
+* Construtores
+* Listas de objetos
+* Enums
+* Validação de entrada
+* Tratamento de entradas inválidas
+* Controle de fluxo
+* Regras de negócio
+* Separação de responsabilidades
+* Organização e refatoração de código
 
-- Cadastro de produtos
-- Bloqueio de produtos duplicados
-- Listagem de produtos cadastrados
-- Venda de produtos
-- Reposição de estoque
-- Edição de produtos
-- Edição de nome com proteção contra duplicidade
-- Edição de preço de compra
-- Edição de preço de venda
-- Edição de estoque mínimo
-- Edição de quantidade em estoque
-- Resumo geral do estoque
-- Cálculo de valor total em estoque
-- Cálculo de custo total
-- Cálculo de lucro possível
-- Identificação de baixo estoque
-- Validação contra entradas inválidas
+---
 
-## Estrutura do Sistema
+# Funcionalidades da MARK I
 
-O projeto é dividido principalmente em três partes:
+A primeira versão da E.V.A. possui:
 
-### Produto
+* Cadastro de produtos
+* Proteção contra produtos duplicados
+* Busca de produtos por nome
+* Listagem de produtos cadastrados
+* Venda de produtos
+* Controle de estoque insuficiente
+* Reposição de estoque
+* Edição de produtos
+* Alteração do nome do produto
+* Proteção contra nomes duplicados durante edição
+* Alteração do preço de compra
+* Alteração do preço de venda
+* Alteração do estoque mínimo
+* Alteração da quantidade em estoque
+* Resumo geral do estoque
+* Cálculo do valor total de venda do estoque
+* Cálculo do custo total do estoque
+* Cálculo do lucro total possível
+* Cálculo do lucro por unidade
+* Identificação de produtos com baixo estoque
+* Validação de valores numéricos
+* Validação de textos vazios
+* Suporte a cancelamento em operações específicas
 
-Representa um produto do estoque, armazenando informações como:
+---
 
-- Nome
-- Preço de compra
-- Preço de venda
-- Quantidade
-- Estoque mínimo
+# Estrutura do Sistema
 
-Também possui métodos para calcular lucro, alterar dados e controlar quantidade.
+Ao longo do desenvolvimento da MARK I, o projeto foi refatorado para separar melhor as responsabilidades de cada classe.
 
-### Estoque
+A estrutura atual é composta principalmente por cinco classes.
 
-Gerencia a lista de produtos cadastrados.
+## `Main`
 
-É responsável por operações como:
+Responsável apenas por inicializar e executar o sistema.
 
-- Adicionar produto
-- Buscar produto
-- Listar produtos
-- Vender produto
-- Repor produto
-- Exibir resumo geral
+```java
+public static void main(String[] args){
+    SistemaEstoque sistema = new SistemaEstoque();
+    sistema.executar();
+}
+```
 
-### Main
+O `Main` foi propositalmente mantido simples, deixando o controle da aplicação para outras classes.
 
-Contém o menu principal e a interação com o usuário pelo terminal.
+---
 
-Também possui métodos auxiliares para leitura segura de dados, evitando erros com entradas inválidas.
+## `SistemaEstoque`
 
-## Status Atual
+Responsável pelo fluxo principal da aplicação e pela interação com o usuário.
 
-A EVA Mark 1 está em desenvolvimento.
+Entre suas responsabilidades estão:
 
-A versão atual já possui as principais funções de controle de estoque funcionando, com várias validações para evitar erros comuns durante o uso.
+* Exibir o menu
+* Coordenar cadastro de produtos
+* Coordenar vendas
+* Coordenar reposições
+* Coordenar edição de produtos
+* Exibir mensagens ao usuário
+* Listar produtos
+* Exibir o resumo geral do estoque
 
-## Próximos Passos
+Essa classe funciona como a camada responsável por conectar a entrada do usuário às operações do sistema.
 
-Os próximos objetivos são:
+---
 
-- Adicionar opção de cancelar operações em andamento
-- Melhorar loops de cadastro, venda, reposição e edição
-- Implementar salvamento dos produtos em arquivo
-- Implementar carregamento automático dos produtos ao iniciar o sistema
-- Melhorar organização do código
-- Evoluir a interface no terminal
-- Preparar futuras versões da EVA com novos módulos
+## `EntradaConsole`
 
-## Roadmap
+Responsável por centralizar a leitura e validação dos dados digitados pelo usuário.
 
-### Mark 1
+Possui métodos específicos para diferentes tipos de entrada, como:
 
-Base do sistema de estoque.
+* Texto
+* Números inteiros positivos
+* Números inteiros maiores ou iguais a zero
+* Valores `double` positivos
+* Entradas com possibilidade de cancelamento
 
-- Cadastro
-- Venda
-- Reposição
-- Edição
-- Resumo
-- Validações
-- Controle de estoque mínimo
+Essa separação evita repetir lógica de validação em diferentes partes do sistema.
 
-### Mark 2
+---
 
-Persistência de dados.
+## `Estoque`
 
-- Salvar produtos em arquivo
-- Carregar produtos ao iniciar
-- Melhorar experiência de uso
-- Cancelamento de operações
+Responsável pelo gerenciamento da coleção de produtos.
 
-### Mark 3
+Entre suas responsabilidades estão:
 
-Organização e expansão.
+* Armazenar produtos
+* Adicionar produtos
+* Impedir produtos duplicados
+* Buscar produtos
+* Realizar vendas
+* Realizar reposições
+* Calcular o valor total do estoque
+* Calcular o custo total do estoque
+* Calcular o lucro total possível
 
-- Melhor separação de responsabilidades
-- Código mais limpo
-- Possível uso de menus mais organizados
-- Preparação para novos módulos
+A classe não é responsável pela interação direta com o usuário.
 
-## Tecnologias Utilizadas
+---
 
-- Java
-- Programação Orientada a Objetos
-- Terminal/Console
-- Git e GitHub
+## `Produto`
 
-## Motivação
+Representa individualmente um produto armazenado no estoque.
 
-A EVA nasceu como um projeto de estudo, mas com a intenção de evoluir para algo maior: um sistema pessoal inteligente, construído passo a passo, acompanhando minha evolução em programação, engenharia de software e desenvolvimento de soluções reais.
+Cada produto possui:
 
-A ideia é que cada versão da EVA represente uma etapa de aprendizado e crescimento técnico.
+* Nome
+* Preço de compra
+* Preço de venda
+* Quantidade em estoque
+* Estoque mínimo
+
+Também concentra regras relacionadas ao próprio produto, incluindo:
+
+* Venda
+* Reposição
+* Alteração de preços
+* Alteração de nome
+* Alteração da quantidade
+* Alteração do estoque mínimo
+* Verificação de baixo estoque
+* Cálculo de lucro
+* Cálculo de custo
+* Cálculo de valor em estoque
+
+A própria classe protege seu estado contra valores inválidos.
+
+---
+
+# Organização Atual
+
+Ao final da MARK I, a arquitetura básica ficou dividida desta forma:
+
+```text
+Main
+ └── Inicialização da aplicação
+
+SistemaEstoque
+ ├── Fluxo do sistema
+ ├── Menu
+ ├── Operações
+ └── Apresentação ao usuário
+
+EntradaConsole
+ └── Entrada e validação de dados
+
+Estoque
+ ├── Coleção de produtos
+ ├── Busca
+ ├── Cadastro
+ ├── Venda
+ ├── Reposição
+ └── Cálculos gerais
+
+Produto
+ ├── Dados
+ ├── Validações
+ ├── Regras de negócio
+ └── Cálculos individuais
+```
+
+---
+
+# Status Atual
+
+## ✅ E.V.A. MARK I — Concluída
+
+A MARK I representa a primeira versão funcional da E.V.A.
+
+Nesta etapa foram concluídos:
+
+* Sistema de estoque funcional em memória
+* Cadastro
+* Venda
+* Reposição
+* Edição
+* Listagem
+* Resumos e cálculos
+* Validações
+* Encapsulamento das entidades
+* Separação da entrada de dados
+* Separação da apresentação
+* Organização das responsabilidades entre as classes
+* Refatoração e simplificação do `Main`
+
+Os dados atualmente existem apenas durante a execução do programa.
+
+Ao encerrar a aplicação, os produtos cadastrados não são preservados.
+
+Essa limitação será o principal foco da próxima versão.
+
+---
+
+# Roadmap
+
+## ✅ MARK I — Base do sistema
+
+Primeira versão funcional do sistema de estoque.
+
+### Concluído
+
+* Cadastro
+* Busca
+* Venda
+* Reposição
+* Edição
+* Listagem
+* Resumo geral
+* Validações
+* Controle de estoque mínimo
+* Organização das classes
+* Separação de responsabilidades
+* Entrada de dados centralizada
+* Refatoração da estrutura inicial
+
+---
+
+## 🚧 MARK II — Persistência
+
+A próxima etapa da E.V.A. terá como principal objetivo fazer com que os dados sobrevivam ao encerramento da aplicação.
+
+Objetivos previstos:
+
+* Implementar persistência dos produtos
+* Salvar os dados cadastrados
+* Carregar automaticamente os dados ao iniciar a aplicação
+* Integrar a persistência à arquitetura atual
+* Melhorar o tratamento de operações
+* Expandir o sistema sem comprometer a organização construída na MARK I
+
+---
+
+## 🔮 MARK III — Expansão
+
+Após a implementação da persistência, a E.V.A. poderá começar a evoluir além do sistema inicial de estoque.
+
+Possíveis objetivos:
+
+* Expandir os módulos existentes
+* Melhorar a experiência de uso
+* Evoluir a arquitetura conforme novas necessidades aparecerem
+* Criar novos módulos
+* Preparar integrações futuras
+* Continuar evoluindo a E.V.A. como sistema pessoal
+
+O escopo dessa fase poderá mudar conforme o projeto e os conhecimentos adquiridos evoluírem.
+
+---
+
+# Tecnologias Utilizadas
+
+* Java
+* Programação Orientada a Objetos
+* Java Collections
+* Terminal / Console
+* Git
+* GitHub
+
+---
+
+# Motivação
+
+A E.V.A. nasceu como um projeto de estudo, mas com a intenção de evoluir para algo muito maior.
+
+Em vez de desenvolver exercícios isolados apenas para praticar conceitos, a ideia é aplicar os conhecimentos adquiridos em um mesmo projeto de longo prazo, permitindo que sua arquitetura, funcionalidades e complexidade evoluam junto com meu aprendizado.
+
+Cada MARK representa uma nova etapa dessa evolução.
+
+A MARK I representa a construção da primeira base funcional.
+
+A partir dela, novas versões deverão introduzir persistência, novos módulos, automações e funcionalidades progressivamente mais avançadas.
+
+O objetivo é que a E.V.A. acompanhe minha evolução em **programação, engenharia de software e desenvolvimento de sistemas reais**.
+
+---
 
 ## Observação
 
-Este projeto ainda está em fase inicial e serve como laboratório de aprendizado, testes e evolução contínua.
+Este é um projeto pessoal de aprendizado e evolução contínua.
+
+A arquitetura e as decisões técnicas poderão ser alteradas conforme novos conceitos forem estudados e novas necessidades surgirem.
+
+A ideia não é construir tudo de uma vez, mas evoluir a E.V.A. progressivamente, mantendo cada versão como um registro do aprendizado adquirido durante o processo.
