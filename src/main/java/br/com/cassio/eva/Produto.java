@@ -1,3 +1,5 @@
+package br.com.cassio.eva;
+
 public class Produto {
     private String nome;
     private double precoVenda;

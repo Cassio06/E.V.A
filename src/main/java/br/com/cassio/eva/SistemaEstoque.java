@@ -1,4 +1,6 @@
-    import java.util.List;
+package br.com.cassio.eva;
+
+import java.util.List;
 
 
     public class SistemaEstoque {
@@ -17,10 +19,10 @@
 
             do {
                 System.out.println("======SISTEMA ESTOQUE======");
-                System.out.println("1-Adicionar Produto.");
-                System.out.println("2-Vender Produto.");
-                System.out.println("3-Repor Produto.");
-                System.out.println("4-Editar Produto.");
+                System.out.println("1-Adicionar.");
+                System.out.println("2-Vender.");
+                System.out.println("3-Repor.");
+                System.out.println("4-Editar.");
                 System.out.println("5-Resumo Geral.");
                 System.out.println("6-Listar Produtos.");
                 System.out.println("0-Sair");
@@ -243,6 +245,4 @@
 
         }
     }
-
-
 
