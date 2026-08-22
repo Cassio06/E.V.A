@@ -68,7 +68,9 @@ public class ProdutoRepository {
         String sql = "SELECT id, nome, preco_compra, preco_venda, quantidade, estoque_minimo " +
                 "FROM produtos " +
                 "WHERE id = ? AND ativo = TRUE";
-
+        if(id <=0){
+            return null;
+        }
         try(Connection conexao = ConexaoBanco.conectar();
             PreparedStatement comando = conexao.prepareStatement(sql)){
             comando.setLong(1, id);
@@ -80,7 +82,7 @@ public class ProdutoRepository {
                     double precoVenda = resultado.getDouble("preco_venda");
                     int quantidade = resultado.getInt("quantidade");
                     int estoqueMinimo = resultado.getInt("estoque_minimo");
-                    Produto produto = new Produto(id,
+                    Produto produto = new Produto(idEncontrado,
                             nome,
                             precoCompra,
                             precoVenda,
@@ -95,5 +97,23 @@ public class ProdutoRepository {
 
         return null;
 
+    }
+
+    public boolean atualizarQuantidade(long id, int novaQuantidade){
+        String sql = "UPDATE produtos SET quantidade = ? " +
+                "WHERE id = ? AND ativo = TRUE";
+        if(id <= 0 || novaQuantidade < 0){
+            return false;
+        }
+        try(Connection conexao = ConexaoBanco.conectar();
+            PreparedStatement comando = conexao.prepareStatement(sql)){
+            comando.setInt(1, novaQuantidade);
+            comando.setLong(2, id);
+            int linhasAfetadas = comando.executeUpdate();
+            return linhasAfetadas == 1;
+        }catch(SQLException e){
+            System.out.println("Erro ao atualizar a quantidade: " + e.getMessage());
+        }
+        return false;
     }
 }

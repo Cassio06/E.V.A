@@ -5,28 +5,13 @@ public class TesteProdutoRepository {
 
         ProdutoRepository produtoRepository = new ProdutoRepository();
 
-        Produto produtoEncontrado = produtoRepository.buscarPorId(6);
+        produtoRepository.atualizarQuantidade(1, 0);
 
-        if (produtoEncontrado != null){
-            System.out.println("Encontrado: " +
-                    produtoEncontrado.getId() + " - " +
-                    produtoEncontrado.getNome());
-
-        }else{
-            System.out.println("Produto não encontrado.");
+        for(Produto produto : produtoRepository.listarAtivos()){
+            System.out.println("ID: " +produto.getId() +
+                    " Nome: " + produto.getNome() +
+                    " Quantidade: " + produto.getQuantidade());
         }
-
-        Produto produtoInexistente = produtoRepository.buscarPorId(100);
-
-        if (produtoInexistente != null){
-            System.out.println("Encontrado: " +
-                    produtoInexistente.getId() + " - " +
-                    produtoInexistente.getNome());
-
-        }else{
-            System.out.println("Produto não encontrado.");
-        }
-
 
 
 
