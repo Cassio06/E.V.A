@@ -5,10 +5,13 @@ import java.util.List;
 
     public class SistemaEstoque {
 
+        private final ProdutoRepository produtoRepository;
         private final Estoque estoque;
         private final EntradaConsole entrada;
 
         public SistemaEstoque() {
+
+            produtoRepository = new ProdutoRepository();
             estoque = new Estoque();
             entrada = new EntradaConsole();
         }
@@ -47,10 +50,6 @@ import java.util.List;
 
             String nome = entrada.lerTexto("Nome do produto: ");
 
-            while(estoque.buscarProduto(nome.trim()) != null){
-                System.out.println("Produto já cadastrado");
-                nome = entrada.lerTexto("Nome do produto: ");
-            }
             double precoPago = entrada.lerDoublePositivo("Preço pago: ");
 
             double precoVenda;
@@ -69,7 +68,7 @@ import java.util.List;
 
 
             Produto produto = new Produto(nome, precoPago, precoVenda, quantidade, estoqueMinimo);
-            boolean resultado = estoque.adicionarProduto(produto);
+            boolean resultado = produtoRepository.inserir(produto);
             if (resultado){
                 System.out.println("Produto Cadastrado.");
 
@@ -212,7 +211,7 @@ import java.util.List;
             System.out.println("=================================");
         }
         private void listarProdutos(){
-            List<Produto> produtos = estoque.getProdutos();
+            List<Produto> produtos = produtoRepository.listarAtivos();
 
             if(produtos.isEmpty()){
                 System.out.println("Estoque vazio.");
@@ -225,6 +224,7 @@ import java.util.List;
             }
         }
         public void exibirProduto(Produto produto) {
+            System.out.println("ID: " + produto.getId());
             System.out.println("Produto: " + produto.getNome());
             System.out.printf("Preço Venda: %.2f%n", produto.getPrecoVenda());
             System.out.printf("Preço Pago: %.2f%n", produto.getPrecoCompra());

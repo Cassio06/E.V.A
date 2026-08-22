@@ -4,4 +4,10 @@
 
 # Arquivos compilados
 out/
-*.class
+
+# Maven
+target/
+
+# Segredos locais
+.env
+*.env
