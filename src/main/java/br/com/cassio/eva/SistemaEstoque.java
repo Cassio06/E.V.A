@@ -1,12 +1,17 @@
-    import java.util.List;
+package br.com.cassio.eva;
+
+import java.util.List;
 
 
     public class SistemaEstoque {
 
+        private final ProdutoRepository produtoRepository;
         private final Estoque estoque;
         private final EntradaConsole entrada;
 
         public SistemaEstoque() {
+
+            produtoRepository = new ProdutoRepository();
             estoque = new Estoque();
             entrada = new EntradaConsole();
         }
@@ -17,10 +22,10 @@
 
             do {
                 System.out.println("======SISTEMA ESTOQUE======");
-                System.out.println("1-Adicionar Produto.");
-                System.out.println("2-Vender Produto.");
-                System.out.println("3-Repor Produto.");
-                System.out.println("4-Editar Produto.");
+                System.out.println("1-Adicionar.");
+                System.out.println("2-Vender.");
+                System.out.println("3-Repor.");
+                System.out.println("4-Editar.");
                 System.out.println("5-Resumo Geral.");
                 System.out.println("6-Listar Produtos.");
                 System.out.println("0-Sair");
@@ -45,10 +50,6 @@
 
             String nome = entrada.lerTexto("Nome do produto: ");
 
-            while(estoque.buscarProduto(nome.trim()) != null){
-                System.out.println("Produto já cadastrado");
-                nome = entrada.lerTexto("Nome do produto: ");
-            }
             double precoPago = entrada.lerDoublePositivo("Preço pago: ");
 
             double precoVenda;
@@ -67,7 +68,7 @@
 
 
             Produto produto = new Produto(nome, precoPago, precoVenda, quantidade, estoqueMinimo);
-            boolean resultado = estoque.adicionarProduto(produto);
+            boolean resultado = produtoRepository.inserir(produto);
             if (resultado){
                 System.out.println("Produto Cadastrado.");
 
@@ -210,7 +211,7 @@
             System.out.println("=================================");
         }
         private void listarProdutos(){
-            List<Produto> produtos = estoque.getProdutos();
+            List<Produto> produtos = produtoRepository.listarAtivos();
 
             if(produtos.isEmpty()){
                 System.out.println("Estoque vazio.");
@@ -223,6 +224,7 @@
             }
         }
         public void exibirProduto(Produto produto) {
+            System.out.println("ID: " + produto.getId());
             System.out.println("Produto: " + produto.getNome());
             System.out.printf("Preço Venda: %.2f%n", produto.getPrecoVenda());
             System.out.printf("Preço Pago: %.2f%n", produto.getPrecoCompra());
@@ -243,6 +245,4 @@
 
         }
     }
-
-
 

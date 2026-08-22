@@ -1,4 +1,7 @@
+package br.com.cassio.eva;
+
 public class Produto {
+    private Long id;
     private String nome;
     private double precoVenda;
     private double precoCompra;
@@ -36,8 +39,19 @@ public class Produto {
         this.estoqueMinimo = estoqueMinimo;
     }
 
+    public Produto(long id, String nome, double precoCompra, double precoVenda, int quantidade, int estoqueMinimo){
+        this(nome, precoCompra, precoVenda, quantidade, estoqueMinimo);
 
+        if(id <=0){
+            throw new IllegalArgumentException("O ID deve ser maior que zero.");
+        }
 
+        this.id = id;
+    }
+
+    public Long getId(){
+        return id;
+    }
     public String getNome(){
 
         return nome;

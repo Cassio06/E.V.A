@@ -1,3 +1,5 @@
+package br.com.cassio.eva;
+
 import java.util.Scanner;
 
 public class EntradaConsole {
