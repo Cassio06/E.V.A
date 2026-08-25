@@ -21,14 +21,14 @@ import java.util.List;
             int opcao;
 
             do {
-                System.out.println("======SISTEMA ESTOQUE======");
-                System.out.println("1-Adicionar.");
-                System.out.println("2-Vender.");
-                System.out.println("3-Repor.");
-                System.out.println("4-Editar.");
-                System.out.println("5-Resumo Geral.");
-                System.out.println("6-Listar Produtos.");
-                System.out.println("0-Sair");
+                System.out.println("===== SISTEMA DE ESTOQUE =====");
+                System.out.println("1 - Adicionar produto");
+                System.out.println("2 - Vender produto");
+                System.out.println("3 - Repor produto");
+                System.out.println("4 - Editar produto");
+                System.out.println("5 - Exibir resumo geral");
+                System.out.println("6 - Listar produtos");
+                System.out.println("0 - Sair");
                 opcao = entrada.lerIntZeroOuPositivo("Escolha uma opção: ");
 
                 switch(opcao){
@@ -39,7 +39,7 @@ import java.util.List;
                     case 5 -> exibirResumoGeral();
                     case 6 -> listarProdutos();
                     case 0 -> System.out.println("Saindo...");
-                    default -> System.out.println("Escolha uma opção valida");
+                    default -> System.out.println("Escolha uma opção válida.");
                 }
             }while(opcao != 0);
         }
@@ -50,30 +50,30 @@ import java.util.List;
 
             String nome = entrada.lerTexto("Nome do produto: ");
 
-            double precoPago = entrada.lerDoublePositivo("Preço pago: ");
+            double precoPago = entrada.lerDoublePositivo("Preço de compra: ");
 
             double precoVenda;
 
             do {
                 precoVenda = entrada.lerDoublePositivo("Preço de venda: ");
                 if (precoVenda < precoPago) {
-                    System.out.println("Preço de venda menor que o preço pago. Isso daria prejuízo");
+                    System.out.println("O preço de venda não pode ser menor que o preço de compra.");
                 }
             } while (precoVenda < precoPago);
 
             int quantidade = entrada.lerIntZeroOuPositivo("Quantidade: ");
 
-            int estoqueMinimo = entrada.lerIntZeroOuPositivo("Estoque Minimo: ");
+            int estoqueMinimo = entrada.lerIntZeroOuPositivo("Estoque mínimo: ");
 
 
 
             Produto produto = new Produto(nome, precoPago, precoVenda, quantidade, estoqueMinimo);
             boolean resultado = produtoRepository.inserir(produto);
             if (resultado){
-                System.out.println("Produto Cadastrado.");
+                System.out.println("Produto cadastrado com sucesso.");
 
             }else{
-                System.out.println("Erro no Cadastro.");
+                System.out.println("Não foi possível cadastrar o produto.");
             }
 
         }
@@ -82,7 +82,7 @@ import java.util.List;
             Produto produtoVenda = null;
             String nomeVenda = null;
             while (produtoVenda == null) {
-                nomeVenda = entrada.lerTexto("Nome do produto vendido: ");
+                nomeVenda = entrada.lerTexto("Nome do produto para venda: ");
                 produtoVenda = estoque.buscarProduto(nomeVenda);
 
                 if (produtoVenda == null) {
@@ -97,14 +97,14 @@ import java.util.List;
             int quantidadeVenda = entrada.lerIntPositivo("Quantidade vendida: ");
 
             while(quantidadeVenda > produtoVenda.getQuantidade()){
-                System.out.println("Estoque insuficiente. Quantidade disponível: " + produtoVenda.getQuantidade());
+                System.out.println("Estoque insuficiente. Quantidade disponível: " + produtoVenda.getQuantidade() + ".");
                 quantidadeVenda = entrada.lerIntPositivo("Quantidade vendida: ");
             }
             Produto.ResultadoVenda resultado = estoque.venderProduto(nomeVenda, quantidadeVenda);
             switch(resultado){
-                case SUCESSO -> System.out.println("Venda feita com sucesso.");
+                case SUCESSO -> System.out.println("Venda realizada com sucesso.");
                 case ESTOQUE_INSUFICIENTE -> System.out.println("Estoque insuficiente.");
-                case NUMERO_INVALIDO -> System.out.println("Insira um número valido");
+                case NUMERO_INVALIDO -> System.out.println("Digite uma quantidade válida.");
                 case PRODUTO_NAO_ENCONTRADO -> System.out.println("Produto não encontrado.");
             }
         }
@@ -112,33 +112,33 @@ import java.util.List;
             String nomeReposicao = entrada.lerTexto("Nome do produto para repor: ");
             Produto produtoReposicao = estoque.buscarProduto(nomeReposicao);
             while(produtoReposicao == null){
-                System.out.println("Produto não existe.");
+                System.out.println("Produto não encontrado.");
                 nomeReposicao = entrada.lerTexto("Nome do produto para repor: ");
                 produtoReposicao = estoque.buscarProduto(nomeReposicao);
             }
-            int quantidadeReposicao = entrada.lerIntPositivo("Quantidade para repor:" );
+            int quantidadeReposicao = entrada.lerIntPositivo("Quantidade para repor: " );
 
             boolean resultado = estoque.reporProduto(nomeReposicao, quantidadeReposicao);
             if(resultado){
-                System.out.println("Reposição feita com sucesso.");
+                System.out.println("Reposição realizada com sucesso.");
 
             }else{
-                System.out.println("Erro na reposição.");
+                System.out.println("Não foi possível repor o produto.");
             }
         }
         private void editarProduto(){
             if(!listarProdutosResumido()){
                 return;
             }
-            System.out.println("=====EDITAR PRODUTO=====");
-            Integer idProdutoEditar = entrada.lerIntPositivoOuCancelar("ID do produto que deseja editar(0- P/sair): ");
+            System.out.println("===== EDITAR PRODUTO =====");
+            Integer idProdutoEditar = entrada.lerIntPositivoOuCancelar("ID do produto que deseja editar (digite 0 para sair): ");
             if (idProdutoEditar == null){
                 return;
             }
             Produto produtoEditar = produtoRepository.buscarPorId(idProdutoEditar);
             while(produtoEditar == null){
                 System.out.println("Produto não encontrado.");
-                idProdutoEditar = entrada.lerIntPositivoOuCancelar("ID do produto que deseja Editar(Caso deseje sair digite 0): ");
+                idProdutoEditar = entrada.lerIntPositivoOuCancelar("ID do produto que deseja editar (digite 0 para sair): ");
                 if (idProdutoEditar == null){
                     return;
                 }
@@ -147,7 +147,7 @@ import java.util.List;
             }
             exibirProdutoResumido(produtoEditar);
 
-            String novoNome = entrada.lerTextoOpcional("Novo nome(Enter para Manter): ");
+            String novoNome = entrada.lerTextoOpcional("Novo nome (pressione Enter para manter): ");
             Double novoPrecoCompra;
             Double novoPrecoVenda;
             Integer novoEstoqueMinimo;
@@ -160,11 +160,11 @@ import java.util.List;
             double precoVendaFinal;
             while(true){
 
-                novoPrecoCompra = entrada.lerDoublePositivoOpcionalOuCancelar("Novo Preço Compra(Enter P/ Manter e 0 P/Sair): ");
+                novoPrecoCompra = entrada.lerDoublePositivoOpcionalOuCancelar("Novo preço de compra (pressione Enter para manter ou digite 0 para sair): ");
                 if(novoPrecoCompra != null && novoPrecoCompra == 0.0){
                     return;
                 }
-                novoPrecoVenda = entrada.lerDoublePositivoOpcionalOuCancelar("Novo Preço Venda(Enter P/ Manter e 0 P/Sair): ");
+                novoPrecoVenda = entrada.lerDoublePositivoOpcionalOuCancelar("Novo preço de venda (pressione Enter para manter ou digite 0 para sair): ");
                 if(novoPrecoVenda != null && novoPrecoVenda == 0.0){
                     return;
                 }
@@ -190,7 +190,7 @@ import java.util.List;
 
 
             }
-            novoEstoqueMinimo = entrada.lerIntZeroOuPositivoOpcional("Novo Estoque Minimo(Enter para Manter): ");
+            novoEstoqueMinimo = entrada.lerIntZeroOuPositivoOpcional("Novo estoque mínimo (pressione Enter para manter): ");
 
             if(novoNome == null && novoPrecoCompra == null && novoPrecoVenda == null && novoEstoqueMinimo == null){
                 System.out.println("Nenhum dado do produto foi alterado.");
@@ -217,7 +217,7 @@ import java.util.List;
             boolean resultadoEstoqueMinimo = produtoEditar.alterarEstoqueMinimo(estoqueMinimoFinal);
 
             if(!resultadoNome || ! resultadoPrecos || !resultadoEstoqueMinimo){
-                System.out.println("Erro!");
+                System.out.println("Não foi possível atualizar os dados do produto.");
                 return;
             }
 
@@ -228,11 +228,11 @@ import java.util.List;
 
 
         private void exibirResumoGeral(){
-            System.out.println("=====RESUMO GERAL DO ESTOQUE=====");
+            System.out.println("===== RESUMO GERAL DO ESTOQUE =====");
             System.out.printf("Valor total em estoque: R$ %.2f%n", estoque.valorTotalDoEstoque());
             System.out.printf("Custo total em estoque: R$ %.2f%n", estoque.custoTotalDoEstoque());
-            System.out.printf("Lucro total possivel: R$ %.2f%n", estoque.lucroTotalDoEstoque());
-            System.out.println("=================================");
+            System.out.printf("Lucro total possível: R$ %.2f%n", estoque.lucroTotalDoEstoque());
+            System.out.println("===================================");
         }
         private void listarProdutos(){
             List<Produto> produtos = produtoRepository.listarAtivos();
@@ -264,40 +264,39 @@ import java.util.List;
         public void exibirProduto(Produto produto) {
             System.out.println("ID: " + produto.getId());
             System.out.println("Produto: " + produto.getNome());
-            System.out.printf("Preço Venda: %.2f%n", produto.getPrecoVenda());
-            System.out.printf("Preço Pago: %.2f%n", produto.getPrecoCompra());
-            System.out.println("Estoque: " + produto.getQuantidade());
-            System.out.println("Estoque Minimo: " + produto.getEstoqueMinimo());
-            System.out.printf("Valor Total em Estoque: %.2f%n", produto.valorTotalEmEstoque());
-            System.out.printf("Custo Total em Estoque: %.2f%n", produto.custoTotalEmEstoque());
-            System.out.printf("Lucro por unidade: %.2f%n", produto.lucroProduto());
-            System.out.printf("Lucro Total: %.2f%n", produto.lucroTotalPossivel());
+            System.out.printf("Preço de venda: R$ %.2f%n", produto.getPrecoVenda());
+            System.out.printf("Preço de compra: R$ %.2f%n", produto.getPrecoCompra());
+            System.out.println("Quantidade em estoque: " + produto.getQuantidade());
+            System.out.println("Estoque mínimo: " + produto.getEstoqueMinimo());
+            System.out.printf("Valor total em estoque: R$ %.2f%n", produto.valorTotalEmEstoque());
+            System.out.printf("Custo total em estoque: R$ %.2f%n", produto.custoTotalEmEstoque());
+            System.out.printf("Lucro por unidade: R$ %.2f%n", produto.lucroProduto());
+            System.out.printf("Lucro total possível: R$ %.2f%n", produto.lucroTotalPossivel());
 
 
             if (produto.estaComBaixoEstoque()) {
-                System.out.println("Status: ⚠ Baixo estoque!");
+                System.out.println("Status: ⚠ baixo estoque.");
 
             }else{
-                System.out.println("Status: Estoque Ok.");
+                System.out.println("Status: estoque adequado.");
             }
 
         }
         public void exibirProdutoResumido(Produto produto) {
             System.out.println("ID: " + produto.getId());
             System.out.println("Produto: " + produto.getNome());
-            System.out.printf("Preço Venda: %.2f%n", produto.getPrecoVenda());
-            System.out.printf("Preço Pago: %.2f%n", produto.getPrecoCompra());
-            System.out.println("Estoque: " + produto.getQuantidade());
-            System.out.println("Estoque Minimo: " + produto.getEstoqueMinimo());
+            System.out.printf("Preço de venda: R$ %.2f%n", produto.getPrecoVenda());
+            System.out.printf("Preço de compra: R$ %.2f%n", produto.getPrecoCompra());
+            System.out.println("Quantidade em estoque: " + produto.getQuantidade());
+            System.out.println("Estoque mínimo: " + produto.getEstoqueMinimo());
 
 
             if (produto.estaComBaixoEstoque()) {
-                System.out.println("Status: ⚠ Baixo estoque!");
+                System.out.println("Status: ⚠ baixo estoque.");
 
             }else{
-                System.out.println("Status: Estoque Ok.");
+                System.out.println("Status: estoque adequado.");
             }
 
         }
     }
-

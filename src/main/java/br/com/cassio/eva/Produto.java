@@ -14,23 +14,23 @@ public class Produto {
 
         }
         if (precoCompra <=0 ){
-            throw new IllegalArgumentException("O Preço de compra não pode ser igual ou inferior a zero.");
+            throw new IllegalArgumentException("O preço de compra deve ser maior que zero.");
 
         }
         if (precoVenda <= 0){
-            throw new IllegalArgumentException("O Preço de venda não pode ser igual ou inferior a zero.");
+            throw new IllegalArgumentException("O preço de venda deve ser maior que zero.");
 
         }
         if (precoVenda < precoCompra){
-            throw new IllegalArgumentException("O Preço de venda não pode ser menor que o preço de compra.");
+            throw new IllegalArgumentException("O preço de venda não pode ser menor que o preço de compra.");
 
         }
         if (quantidade < 0){
-            throw new IllegalArgumentException("A quantidade em estoque não pode ser menor do que zero.");
+            throw new IllegalArgumentException("A quantidade em estoque deve ser maior ou igual a zero.");
 
         }
         if (estoqueMinimo < 0){
-            throw new IllegalArgumentException("O estoque minimo não pode ser menor do que zero.");
+            throw new IllegalArgumentException("O estoque mínimo deve ser maior ou igual a zero.");
         }
         this.nome = nome.trim();
         this.precoVenda = precoVenda;

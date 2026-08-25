@@ -8,7 +8,7 @@ public class EntradaConsole {
 
     public String lerTexto(String mensagem){
         while(true){
-            System.out.println(mensagem);
+            System.out.print(mensagem);
             String entrada = input.nextLine().trim();
             if (!entrada.isEmpty()){
                 return entrada;
@@ -18,7 +18,7 @@ public class EntradaConsole {
     }
     public double lerDoublePositivo(String mensagem){
         while(true){
-            System.out.println(mensagem);
+            System.out.print(mensagem);
             String entrada = input.nextLine().trim().replace(",",".");
 
             try{
@@ -27,16 +27,16 @@ public class EntradaConsole {
                 if(valor > 0){
                     return valor;
                 }
-                System.out.println("Valor invalido. Digite um número maior que zero.");
+                System.out.println("Valor inválido. Digite um número maior que zero.");
 
             } catch(NumberFormatException e){
-                System.out.println("Entrada inválida. Digite um número válido");
+                System.out.println("Entrada inválida. Digite um número válido.");
             }
         }
     }
     public int lerIntPositivo(String mensagem){
         while(true){
-            System.out.println(mensagem);
+            System.out.print(mensagem);
             String entrada = input.nextLine().trim();
 
             try{
@@ -46,7 +46,7 @@ public class EntradaConsole {
                     return valor;
                 }
 
-                System.out.println("Quantidade invalida. Digite um número maior que zero.");
+                System.out.println("Valor inválido. Digite um número inteiro maior que zero.");
 
             } catch(NumberFormatException e){
                 System.out.println("Entrada inválida. Digite um número inteiro válido.");
@@ -55,7 +55,7 @@ public class EntradaConsole {
     }
     public int lerIntZeroOuPositivo(String mensagem){
         while(true){
-            System.out.println(mensagem);
+            System.out.print(mensagem);
             String entrada = input.nextLine().trim();
 
             try {
@@ -66,7 +66,7 @@ public class EntradaConsole {
 
                 }
 
-                System.out.println("Digite um número maior ou igual a zero.");
+                System.out.println("Valor inválido. Digite um número inteiro maior ou igual a zero.");
 
             } catch(NumberFormatException e){
                 System.out.println("Entrada inválida. Digite um número inteiro válido.");
@@ -79,7 +79,7 @@ public class EntradaConsole {
     }
     public String lerTextoOuCancelar(String mensagem){
         while(true){
-            System.out.println(mensagem);
+            System.out.print(mensagem);
             String entrada = input.nextLine().trim();
 
             if(isCancelar(entrada)){
@@ -99,7 +99,7 @@ public class EntradaConsole {
     }
     public Double lerDoublePositivoOuCancelar(String mensagem){
         while (true) {
-            System.out.println(mensagem);
+            System.out.print(mensagem);
             String entrada = input.nextLine().trim();
 
             if(isCancelar(entrada)){
@@ -125,7 +125,7 @@ public class EntradaConsole {
     }
     public Integer lerIntPositivoOuCancelar(String mensagem){
         while (true) {
-            System.out.println(mensagem);
+            System.out.print(mensagem);
             String entrada = input.nextLine().trim();
 
             if(isCancelar(entrada)){
@@ -140,16 +140,16 @@ public class EntradaConsole {
                     return valor;
                 }
 
-                System.out.println("Valor inválido. Digite um número maior que zero.");
+                System.out.println("Valor inválido. Digite um número inteiro maior que zero.");
 
 
             }catch(NumberFormatException e){
-                System.out.println("Entrada inválida. Digite um número válido.");
+                System.out.println("Entrada inválida. Digite um número inteiro válido.");
             }
         }
     }
     public String lerTextoOpcional(String mensagem){
-        System.out.println(mensagem);
+        System.out.print(mensagem);
 
         String entrada = input.nextLine().trim();
 
@@ -162,7 +162,7 @@ public class EntradaConsole {
 
     public Double lerDoublePositivoOpcional(String mensagem){
         while(true) {
-            System.out.println(mensagem);
+            System.out.print(mensagem);
 
             String entrada = input.nextLine().trim();
             if (entrada.isEmpty()) {
@@ -177,9 +177,9 @@ public class EntradaConsole {
                 if (valor > 0) {
                     return valor;
                 }
-                System.out.println("Valor inválido. Digite um numero maior ou igual a zero.");
+                System.out.println("Valor inválido. Digite um número maior que zero.");
             } catch (NumberFormatException e) {
-                System.out.println("Entrada invalida. Digite um numero valido");
+                System.out.println("Entrada inválida. Digite um número válido.");
 
             }
 
@@ -188,7 +188,7 @@ public class EntradaConsole {
     }
     public Double lerDoublePositivoOpcionalOuCancelar(String mensagem){
         while(true) {
-            System.out.println(mensagem);
+            System.out.print(mensagem);
 
             String entrada = input.nextLine().trim();
             if(isCancelar(entrada)){
@@ -206,9 +206,9 @@ public class EntradaConsole {
                 if (valor > 0) {
                     return valor;
                 }
-                System.out.println("Valor inválido. Digite um numero maior que zero.");
+                System.out.println("Valor inválido. Digite um número maior que zero.");
             } catch (NumberFormatException e) {
-                System.out.println("Entrada invalida. Digite um numero valido");
+                System.out.println("Entrada inválida. Digite um número válido.");
 
             }
 
@@ -217,7 +217,7 @@ public class EntradaConsole {
     }
     public Integer lerIntZeroOuPositivoOpcional(String mensagem){
         while(true) {
-            System.out.println(mensagem);
+            System.out.print(mensagem);
             String entrada = input.nextLine().trim();
 
             if (entrada.isEmpty()) {
@@ -232,10 +232,10 @@ public class EntradaConsole {
                 if(valor >= 0){
                     return valor;
                 }
-                System.out.println("Valor inválido. Digite um numero maior ou igual a zero.");
+                System.out.println("Valor inválido. Digite um número inteiro maior ou igual a zero.");
 
             }catch(NumberFormatException e){
-                System.out.println("Entrada inválida. Digite um numero válido.");
+                System.out.println("Entrada inválida. Digite um número inteiro válido.");
             }
 
         }
