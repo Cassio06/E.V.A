@@ -5,15 +5,24 @@ public class TesteProdutoRepository {
 
         ProdutoRepository produtoRepository = new ProdutoRepository();
 
-        produtoRepository.atualizarQuantidade(1, 0);
+        Produto produto = new Produto(
+                1L,
+                "Teclado Mecânico",
+                249.90,
+                379.90,
+                0,
+                5
+        );
 
-        for(Produto produto : produtoRepository.listarAtivos()){
-            System.out.println("ID: " +produto.getId() +
-                    " Nome: " + produto.getNome() +
-                    " Quantidade: " + produto.getQuantidade());
-        }
+        System.out.println(produtoRepository.atualizarDados(produto));
 
+        Produto atualizado = produtoRepository.buscarPorId(1L);
 
-
-    }
+        System.out.println(
+                atualizado.getNome() + " | " +
+                        atualizado.getPrecoCompra() + " | " +
+                        atualizado.getPrecoVenda() + " | " +
+                        atualizado.getEstoqueMinimo()
+        );
+}
 }

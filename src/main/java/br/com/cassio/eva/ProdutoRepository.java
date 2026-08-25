@@ -116,4 +116,25 @@ public class ProdutoRepository {
         }
         return false;
     }
+
+    public boolean atualizarDados(Produto produto){
+        String sql = "UPDATE produtos SET nome = ?, preco_compra = ?, preco_venda = ?, estoque_minimo = ? " +
+                "WHERE id = ? AND ativo = TRUE";
+        if(produto == null || produto.getId() == null || produto.getId() <= 0){
+            return false;
+        }
+        try(Connection conexao = ConexaoBanco.conectar();
+        PreparedStatement comando = conexao.prepareStatement(sql)){
+            comando.setString(1, produto.getNome());
+            comando.setDouble(2, produto.getPrecoCompra());
+            comando.setDouble(3, produto.getPrecoVenda());
+            comando.setInt(4, produto.getEstoqueMinimo());
+            comando.setLong(5, produto.getId());
+            int linhasAfetadas = comando.executeUpdate();
+            return linhasAfetadas == 1;
+        }catch(SQLException e){
+            System.out.println("Erro ao atualizar as informações do produto: " + e.getMessage());
+        }
+        return false;
+    }
 }

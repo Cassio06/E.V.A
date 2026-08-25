@@ -107,6 +107,16 @@ public class Produto {
 
     }
 
+    public boolean alterarPrecos(double novoPrecoCompra, double novoPrecoVenda){
+        if(novoPrecoCompra > novoPrecoVenda || novoPrecoCompra <= 0 || novoPrecoVenda <= 0){
+            return false;
+        }else{
+            precoCompra = novoPrecoCompra;
+            precoVenda = novoPrecoVenda;
+            return true;
+        }
+    }
+
     public boolean alterarPrecoCompra(double novoPrecoCompra){
         if(novoPrecoCompra <= 0 || novoPrecoCompra > precoVenda){
             return false;

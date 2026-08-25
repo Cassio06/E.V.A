@@ -127,78 +127,102 @@ import java.util.List;
             }
         }
         private void editarProduto(){
-            System.out.println("=====EDITAR PRODUTO=====");
-            String nomeProdutoEditar = entrada.lerTextoOuCancelar("Produto que deseja Editar(0-Sair): ");
-            if (nomeProdutoEditar == null){
+            if(!listarProdutosResumido()){
                 return;
             }
-            Produto produtoEditar = estoque.buscarProduto(nomeProdutoEditar);
+            System.out.println("=====EDITAR PRODUTO=====");
+            Integer idProdutoEditar = entrada.lerIntPositivoOuCancelar("ID do produto que deseja editar(0- P/sair): ");
+            if (idProdutoEditar == null){
+                return;
+            }
+            Produto produtoEditar = produtoRepository.buscarPorId(idProdutoEditar);
             while(produtoEditar == null){
                 System.out.println("Produto não encontrado.");
-                nomeProdutoEditar = entrada.lerTextoOuCancelar("Produto que deseja Editar(Caso deseje sair digite 0): ");
-                if (nomeProdutoEditar == null){
+                idProdutoEditar = entrada.lerIntPositivoOuCancelar("ID do produto que deseja Editar(Caso deseje sair digite 0): ");
+                if (idProdutoEditar == null){
                     return;
                 }
-                produtoEditar = estoque.buscarProduto(nomeProdutoEditar);
+                produtoEditar = produtoRepository.buscarPorId(idProdutoEditar);
 
             }
-                System.out.println("========================");
-                System.out.println("1-Editar Preço de Compra.");
-                System.out.println("2-Editar Preço de Venda.");
-                System.out.println("3-Editar Estoque Minimo.");
-                System.out.println("4-Editar Nome.");
-                System.out.println("5-Editar Estoque.");
-                System.out.println("0-Sair");
-                System.out.println("========================");
+            exibirProdutoResumido(produtoEditar);
 
-                int opcaoEditar = entrada.lerIntZeroOuPositivo("");
-                switch (opcaoEditar) {
-                    case 1:
+            String novoNome = entrada.lerTextoOpcional("Novo nome(Enter para Manter): ");
+            Double novoPrecoCompra;
+            Double novoPrecoVenda;
+            Integer novoEstoqueMinimo;
 
-                        boolean alterouCompra = produtoEditar.alterarPrecoCompra(entrada.lerDoublePositivo("Novo preço de compra: "));
-                        if(alterouCompra){
-                            System.out.println("Preço de compra alterado com sucesso!!");
-                        }else{
-                            System.out.println("Preço de compra inválido. Ele não pode ser maior que o preço de venda.");
-                        }
 
-                        break;
 
-                    case 2:
-                        boolean alterouVenda = produtoEditar.alterarPrecoVenda(entrada.lerDoublePositivo("Novo preço de Venda: "));
-                        if(alterouVenda){
-                            System.out.println("Preço de venda alterado com sucesso!!");
-                        }else{
-                            System.out.println("Preço de venda inválido. Ele não pode ser menor que o preço de compra.");
-                        }
+            String nomeFinal;
 
-                        break;
-                    case 3:
-                        produtoEditar.alterarEstoqueMinimo(entrada.lerIntZeroOuPositivo("Novo estoque minimo: "));
-                        System.out.println("Estoque Minimo alterado com sucesso!!");
-                        break;
-                    case 4:
-                        String novoNome = entrada.lerTexto("Novo nome do produto: ");
-                        Produto produtoComEsseNome = estoque.buscarProduto(novoNome);
+            double precoCompraFinal;
+            double precoVendaFinal;
+            while(true){
 
-                        while(produtoComEsseNome != null && produtoComEsseNome != produtoEditar){
-                            System.out.println("Nome pertence a outro produto.");
-                            novoNome = entrada.lerTexto("Novo nome do produto: ");
-                            produtoComEsseNome = estoque.buscarProduto(novoNome);
-                        }
-                        produtoEditar.alterarNome(novoNome);
-                        System.out.println("Nome alterado com sucesso!!");
-                        break;
-                    case 5:
-                        produtoEditar.alterarEstoque(entrada.lerIntZeroOuPositivo("Novo Estoque: "));
-                        System.out.println("Estoque alterado com sucesso!!");
-                        break;
-                    case 0:
-                        System.out.println("Saindo");
-                        break;
-                    default:
-                        System.out.println("Opção inválida");
+                novoPrecoCompra = entrada.lerDoublePositivoOpcionalOuCancelar("Novo Preço Compra(Enter P/ Manter e 0 P/Sair): ");
+                if(novoPrecoCompra != null && novoPrecoCompra == 0.0){
+                    return;
                 }
+                novoPrecoVenda = entrada.lerDoublePositivoOpcionalOuCancelar("Novo Preço Venda(Enter P/ Manter e 0 P/Sair): ");
+                if(novoPrecoVenda != null && novoPrecoVenda == 0.0){
+                    return;
+                }
+
+                if(novoPrecoCompra == null){
+                    precoCompraFinal = produtoEditar.getPrecoCompra();
+
+                }else{
+                    precoCompraFinal = novoPrecoCompra;
+                }
+                if(novoPrecoVenda == null){
+                    precoVendaFinal = produtoEditar.getPrecoVenda();
+                }else{
+                    precoVendaFinal = novoPrecoVenda;
+                }
+
+                if(precoCompraFinal > precoVendaFinal){
+                    System.out.println("O preço de compra não pode ser maior que o preço de venda.");
+                } else{
+                    break;
+                }
+
+
+
+            }
+            novoEstoqueMinimo = entrada.lerIntZeroOuPositivoOpcional("Novo Estoque Minimo(Enter para Manter): ");
+
+            if(novoNome == null && novoPrecoCompra == null && novoPrecoVenda == null && novoEstoqueMinimo == null){
+                System.out.println("Nenhum dado do produto foi alterado.");
+                return;
+            }
+
+            if(novoNome == null){
+                nomeFinal = produtoEditar.getNome();
+            }else{
+                nomeFinal = novoNome;
+            }
+
+            int estoqueMinimoFinal;
+
+            if(novoEstoqueMinimo == null){
+                estoqueMinimoFinal = produtoEditar.getEstoqueMinimo();
+
+            }else{
+                estoqueMinimoFinal = novoEstoqueMinimo;
+            }
+
+            boolean resultadoNome = produtoEditar.alterarNome(nomeFinal);
+            boolean resultadoPrecos= produtoEditar.alterarPrecos(precoCompraFinal, precoVendaFinal);
+            boolean resultadoEstoqueMinimo = produtoEditar.alterarEstoqueMinimo(estoqueMinimoFinal);
+
+            if(!resultadoNome || ! resultadoPrecos || !resultadoEstoqueMinimo){
+                System.out.println("Erro!");
+                return;
+            }
+
+            boolean resultadoAtualizarDados = produtoRepository.atualizarDados(produtoEditar);
+
 
             }
 
@@ -223,6 +247,20 @@ import java.util.List;
                 System.out.println("------------------------------");
             }
         }
+        private boolean listarProdutosResumido(){
+            List<Produto> produtos = produtoRepository.listarAtivos();
+
+            if(produtos.isEmpty()){
+                System.out.println("Estoque vazio.");
+                return false;
+
+            }
+            for(Produto produto : produtos){
+                exibirProdutoResumido(produto);
+                System.out.println("------------------------------");
+            }
+            return true;
+        }
         public void exibirProduto(Produto produto) {
             System.out.println("ID: " + produto.getId());
             System.out.println("Produto: " + produto.getNome());
@@ -234,6 +272,23 @@ import java.util.List;
             System.out.printf("Custo Total em Estoque: %.2f%n", produto.custoTotalEmEstoque());
             System.out.printf("Lucro por unidade: %.2f%n", produto.lucroProduto());
             System.out.printf("Lucro Total: %.2f%n", produto.lucroTotalPossivel());
+
+
+            if (produto.estaComBaixoEstoque()) {
+                System.out.println("Status: ⚠ Baixo estoque!");
+
+            }else{
+                System.out.println("Status: Estoque Ok.");
+            }
+
+        }
+        public void exibirProdutoResumido(Produto produto) {
+            System.out.println("ID: " + produto.getId());
+            System.out.println("Produto: " + produto.getNome());
+            System.out.printf("Preço Venda: %.2f%n", produto.getPrecoVenda());
+            System.out.printf("Preço Pago: %.2f%n", produto.getPrecoCompra());
+            System.out.println("Estoque: " + produto.getQuantidade());
+            System.out.println("Estoque Minimo: " + produto.getEstoqueMinimo());
 
 
             if (produto.estaComBaixoEstoque()) {

@@ -148,4 +148,96 @@ public class EntradaConsole {
             }
         }
     }
+    public String lerTextoOpcional(String mensagem){
+        System.out.println(mensagem);
+
+        String entrada = input.nextLine().trim();
+
+        if(entrada.isEmpty()){
+            return null;
+        }
+        return entrada;
+
+    }
+
+    public Double lerDoublePositivoOpcional(String mensagem){
+        while(true) {
+            System.out.println(mensagem);
+
+            String entrada = input.nextLine().trim();
+            if (entrada.isEmpty()) {
+                return null;
+            }
+
+            entrada = entrada.replace(",", ".");
+
+            try {
+                double valor = Double.parseDouble(entrada);
+
+                if (valor > 0) {
+                    return valor;
+                }
+                System.out.println("Valor inválido. Digite um numero maior ou igual a zero.");
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada invalida. Digite um numero valido");
+
+            }
+
+
+        }
+    }
+    public Double lerDoublePositivoOpcionalOuCancelar(String mensagem){
+        while(true) {
+            System.out.println(mensagem);
+
+            String entrada = input.nextLine().trim();
+            if(isCancelar(entrada)){
+                return 0.0;
+            }
+            if (entrada.isEmpty()) {
+                return null;
+            }
+
+            entrada = entrada.replace(",", ".");
+
+            try {
+                double valor = Double.parseDouble(entrada);
+
+                if (valor > 0) {
+                    return valor;
+                }
+                System.out.println("Valor inválido. Digite um numero maior que zero.");
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada invalida. Digite um numero valido");
+
+            }
+
+
+        }
+    }
+    public Integer lerIntZeroOuPositivoOpcional(String mensagem){
+        while(true) {
+            System.out.println(mensagem);
+            String entrada = input.nextLine().trim();
+
+            if (entrada.isEmpty()) {
+                return null;
+
+            }
+            entrada = entrada.replace(",", ".");
+
+            try{
+                int valor = Integer.parseInt(entrada);
+
+                if(valor >= 0){
+                    return valor;
+                }
+                System.out.println("Valor inválido. Digite um numero maior ou igual a zero.");
+
+            }catch(NumberFormatException e){
+                System.out.println("Entrada inválida. Digite um numero válido.");
+            }
+
+        }
+    }
 }
