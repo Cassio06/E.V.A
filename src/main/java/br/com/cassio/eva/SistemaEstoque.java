@@ -80,10 +80,14 @@ import java.util.List;
 
         private void venderProduto(){
             Produto produtoVenda = null;
-            String nomeVenda = null;
+            Integer idProdutoVender = null;
             while (produtoVenda == null) {
-                nomeVenda = entrada.lerTexto("Nome do produto para venda: ");
-                produtoVenda = estoque.buscarProduto(nomeVenda);
+                listarProdutosResumido();
+                idProdutoVender = entrada.lerIntPositivoOuCancelar("ID do produto para venda(Digite 0 para Cancelar): ");
+                if(idProdutoVender == null){
+                    return;
+                }
+                produtoVenda = produtoRepository.buscarPorId(idProdutoVender);
 
                 if (produtoVenda == null) {
                     System.out.println("Produto não encontrado. Digite novamente.");
@@ -100,13 +104,26 @@ import java.util.List;
                 System.out.println("Estoque insuficiente. Quantidade disponível: " + produtoVenda.getQuantidade() + ".");
                 quantidadeVenda = entrada.lerIntPositivo("Quantidade vendida: ");
             }
-            Produto.ResultadoVenda resultado = estoque.venderProduto(nomeVenda, quantidadeVenda);
+
+            Produto.ResultadoVenda resultado = produtoVenda.vender(quantidadeVenda);
+
+
+            boolean atualizouBanco;
             switch(resultado){
-                case SUCESSO -> System.out.println("Venda realizada com sucesso.");
+                case SUCESSO ->{
+                    atualizouBanco = produtoRepository.atualizarQuantidade(produtoVenda.getId(),produtoVenda.getQuantidade());
+                    if(atualizouBanco){
+                        System.out.println("Venda Realizada com sucesso.");
+                    }else{
+                        System.out.println("Não foi possivel persistir a venda.");
+                    }
+                }
+
                 case ESTOQUE_INSUFICIENTE -> System.out.println("Estoque insuficiente.");
                 case NUMERO_INVALIDO -> System.out.println("Digite uma quantidade válida.");
                 case PRODUTO_NAO_ENCONTRADO -> System.out.println("Produto não encontrado.");
             }
+
         }
         private void reporProduto(){
             listarProdutosResumido();
@@ -115,6 +132,7 @@ import java.util.List;
             while(produtoReposicao == null){
                 System.out.println("Produto não encontrado.");
                 idProdutoEditar = entrada.lerIntPositivoOuCancelar("ID do produto que deseja repor(Pressione Zero para sair): ");
+
                 if(idProdutoEditar == null){
                     return;
                 }
