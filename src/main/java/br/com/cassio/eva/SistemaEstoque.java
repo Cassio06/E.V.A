@@ -6,13 +6,11 @@ import java.util.List;
     public class SistemaEstoque {
 
         private final ProdutoRepository produtoRepository;
-        private final Estoque estoque;
         private final EntradaConsole entrada;
 
         public SistemaEstoque() {
 
             produtoRepository = new ProdutoRepository();
-            estoque = new Estoque();
             entrada = new EntradaConsole();
         }
 
@@ -251,10 +249,28 @@ import java.util.List;
 
 
         private void exibirResumoGeral(){
+            List<Produto>   produtos = produtoRepository.listarAtivos();
+            double valorTotalDoEstoque = 0;
+            double custoTotalDoEstoque = 0;
+            double lucroTotalPossivelDoEstoque = 0;
+            if(produtos.isEmpty()) {
+                System.out.println("Estoque vazio.");
+                return;
+
+            }
+
+            for (Produto produto : produtoRepository.listarAtivos()) {
+                valorTotalDoEstoque += produto.valorTotalEmEstoque();
+                custoTotalDoEstoque += produto.custoTotalEmEstoque();
+                lucroTotalPossivelDoEstoque += produto.lucroTotalPossivel();
+
+            }
             System.out.println("===== RESUMO GERAL DO ESTOQUE =====");
-            System.out.printf("Valor total em estoque: R$ %.2f%n", estoque.valorTotalDoEstoque());
-            System.out.printf("Custo total em estoque: R$ %.2f%n", estoque.custoTotalDoEstoque());
-            System.out.printf("Lucro total possível: R$ %.2f%n", estoque.lucroTotalDoEstoque());
+
+            System.out.printf("Valor Total do Estoque: R$%.2f\n", valorTotalDoEstoque);
+            System.out.printf("Custo Total do Estoque: R$%.2f\n", custoTotalDoEstoque);
+            System.out.printf("Lucro Total Possivel do Estoque: R$%.2f\n", lucroTotalPossivelDoEstoque);
+
             System.out.println("===================================");
         }
         private void listarProdutos(){
