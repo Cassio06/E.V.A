@@ -109,16 +109,21 @@ import java.util.List;
             }
         }
         private void reporProduto(){
-            String nomeReposicao = entrada.lerTexto("Nome do produto para repor: ");
-            Produto produtoReposicao = estoque.buscarProduto(nomeReposicao);
+            listarProdutosResumido();
+            Integer idProdutoEditar = entrada.lerIntZeroOuPositivo("ID do produto que deseja repor: ");
+            Produto produtoReposicao = produtoRepository.buscarPorId(idProdutoEditar);
             while(produtoReposicao == null){
                 System.out.println("Produto não encontrado.");
-                nomeReposicao = entrada.lerTexto("Nome do produto para repor: ");
-                produtoReposicao = estoque.buscarProduto(nomeReposicao);
+                idProdutoEditar = entrada.lerIntPositivoOuCancelar("ID do produto que deseja repor(Pressione Zero para sair): ");
+                if(idProdutoEditar == null){
+                    return;
+                }
+                produtoReposicao = produtoRepository.buscarPorId(idProdutoEditar);
+
             }
             int quantidadeReposicao = entrada.lerIntPositivo("Quantidade para repor: " );
-
-            boolean resultado = estoque.reporProduto(nomeReposicao, quantidadeReposicao);
+            int quantidadeAtual = produtoReposicao.getQuantidade();
+            boolean resultado = produtoRepository.atualizarQuantidade(idProdutoEditar, quantidadeReposicao + quantidadeAtual);
             if(resultado){
                 System.out.println("Reposição realizada com sucesso.");
 
