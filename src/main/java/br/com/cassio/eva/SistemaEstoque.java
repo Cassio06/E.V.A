@@ -28,16 +28,19 @@ import java.util.List;
                 System.out.println("6 - Listar produtos");
                 System.out.println("0 - Sair");
                 opcao = entrada.lerIntZeroOuPositivo("Escolha uma opção: ");
-
-                switch(opcao){
-                    case 1 -> adicionarProduto();
-                    case 2 -> venderProduto();
-                    case 3 -> reporProduto();
-                    case 4 -> editarProduto();
-                    case 5 -> exibirResumoGeral();
-                    case 6 -> listarProdutos();
-                    case 0 -> System.out.println("Saindo...");
-                    default -> System.out.println("Escolha uma opção válida.");
+                try {
+                    switch (opcao) {
+                        case 1 -> adicionarProduto();
+                        case 2 -> venderProduto();
+                        case 3 -> reporProduto();
+                        case 4 -> editarProduto();
+                        case 5 -> exibirResumoGeral();
+                        case 6 -> listarProdutos();
+                        case 0 -> System.out.println("Saindo...");
+                        default -> System.out.println("Escolha uma opção válida.");
+                    }
+                }catch(FalhaPersistenciaException e ){
+                    System.out.println("Falha ao acessar o banco de dados. Operação não concluída.");
                 }
             }while(opcao != 0);
         }
@@ -125,7 +128,10 @@ import java.util.List;
         }
         private void reporProduto(){
             listarProdutosResumido();
-            Integer idProdutoEditar = entrada.lerIntZeroOuPositivo("ID do produto que deseja repor: ");
+            Integer idProdutoEditar = entrada.lerIntPositivoOuCancelar("ID do produto que deseja repor(Pressione Zero para sair): ");
+            if(idProdutoEditar == null){
+                return;
+            }
             Produto produtoReposicao = produtoRepository.buscarPorId(idProdutoEditar);
             while(produtoReposicao == null){
                 System.out.println("Produto não encontrado.");
@@ -137,9 +143,15 @@ import java.util.List;
                 produtoReposicao = produtoRepository.buscarPorId(idProdutoEditar);
 
             }
+            boolean resultado = false;
             int quantidadeReposicao = entrada.lerIntPositivo("Quantidade para repor: " );
-            int quantidadeAtual = produtoReposicao.getQuantidade();
-            boolean resultado = produtoRepository.atualizarQuantidade(idProdutoEditar, quantidadeReposicao + quantidadeAtual);
+            if(produtoReposicao.repor(quantidadeReposicao)){
+                resultado = produtoRepository.atualizarQuantidade(idProdutoEditar, produtoReposicao.getQuantidade());
+            }else{
+                System.out.println("Quantidade Inválida.");
+                return;
+            }
+
             if(resultado){
                 System.out.println("Reposição realizada com sucesso.");
 
@@ -244,12 +256,19 @@ import java.util.List;
 
             boolean resultadoAtualizarDados = produtoRepository.atualizarDados(produtoEditar);
 
+            if(resultadoAtualizarDados){
+                System.out.println("Produto atualizado com sucesso.");
 
+            }else{
+                System.out.println("Não foi possivel atualizar o produto.");
             }
 
 
+        }
+
+
         private void exibirResumoGeral(){
-            List<Produto>   produtos = produtoRepository.listarAtivos();
+            List<Produto> produtos = produtoRepository.listarAtivos();
             double valorTotalDoEstoque = 0;
             double custoTotalDoEstoque = 0;
             double lucroTotalPossivelDoEstoque = 0;
@@ -259,7 +278,7 @@ import java.util.List;
 
             }
 
-            for (Produto produto : produtoRepository.listarAtivos()) {
+            for (Produto produto : produtos) {
                 valorTotalDoEstoque += produto.valorTotalEmEstoque();
                 custoTotalDoEstoque += produto.custoTotalEmEstoque();
                 lucroTotalPossivelDoEstoque += produto.lucroTotalPossivel();

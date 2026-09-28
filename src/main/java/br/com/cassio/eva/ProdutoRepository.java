@@ -27,9 +27,8 @@ public class ProdutoRepository {
             return linhasAfetadas == 1;
 
      } catch (SQLException e) {
-         System.out.println("Erro ao inserir produto: " + e.getMessage());
+         throw new FalhaPersistenciaException("Erro ao inserir produto: ", e);
      }
-     return false;
     }
 
     public List<Produto> listarAtivos(){
@@ -60,7 +59,7 @@ public class ProdutoRepository {
                 produtos.add(produto);
             }
         }catch (SQLException e){
-            System.out.println("Erro ao listar produtos: " + e.getMessage());
+            throw new FalhaPersistenciaException("Falha ao consultar os produtos.", e);
         }
         return produtos;
     }
@@ -92,7 +91,7 @@ public class ProdutoRepository {
                 }
             }
         }catch(SQLException e){
-            System.out.println("Erro ao buscar produto: " + e.getMessage());
+            throw new FalhaPersistenciaException("Falha ao buscar o produto.", e);
         }
 
         return null;
@@ -112,9 +111,8 @@ public class ProdutoRepository {
             int linhasAfetadas = comando.executeUpdate();
             return linhasAfetadas == 1;
         }catch(SQLException e){
-            System.out.println("Erro ao atualizar a quantidade: " + e.getMessage());
+            throw new FalhaPersistenciaException("Erro ao atualizar a quantidade: ", e);
         }
-        return false;
     }
 
     public boolean atualizarDados(Produto produto){
@@ -133,8 +131,7 @@ public class ProdutoRepository {
             int linhasAfetadas = comando.executeUpdate();
             return linhasAfetadas == 1;
         }catch(SQLException e){
-            System.out.println("Erro ao atualizar as informações do produto: " + e.getMessage());
+            throw new FalhaPersistenciaException("Erro ao atualizar as informações do produto: " ,e );
         }
-        return false;
     }
 }
