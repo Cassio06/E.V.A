@@ -1,29 +1,28 @@
 package br.com.cassio.eva;
 
+import java.math.BigDecimal;
+
 public class Produto {
     private Long id;
     private String nome;
-    private double precoVenda;
-    private double precoCompra;
+    private BigDecimal precoVenda;
+    private BigDecimal precoCompra;
     private int quantidade;
     private int estoqueMinimo;
 
-    public Produto(String nome, double precoCompra, double precoVenda, int quantidade, int estoqueMinimo){
+    public Produto(String nome, BigDecimal precoCompra, BigDecimal precoVenda, int quantidade, int estoqueMinimo){
         if(nome == null || nome.isBlank()){
             throw new IllegalArgumentException("O nome não pode estar vazio.");
 
         }
-        if (precoCompra <=0 ){
+        if(precoCompra == null || precoCompra.compareTo(BigDecimal.ZERO) <= 0){
             throw new IllegalArgumentException("O preço de compra deve ser maior que zero.");
-
         }
-        if (precoVenda <= 0){
+        if(precoVenda == null || precoVenda.compareTo(BigDecimal.ZERO) <= 0){
             throw new IllegalArgumentException("O preço de venda deve ser maior que zero.");
-
         }
-        if (precoVenda < precoCompra){
+        if(precoVenda.compareTo(precoCompra) < 0){
             throw new IllegalArgumentException("O preço de venda não pode ser menor que o preço de compra.");
-
         }
         if (quantidade < 0){
             throw new IllegalArgumentException("A quantidade em estoque deve ser maior ou igual a zero.");
@@ -39,7 +38,7 @@ public class Produto {
         this.estoqueMinimo = estoqueMinimo;
     }
 
-    public Produto(long id, String nome, double precoCompra, double precoVenda, int quantidade, int estoqueMinimo){
+    public Produto(long id, String nome, BigDecimal precoCompra, BigDecimal precoVenda, int quantidade, int estoqueMinimo){
         this(nome, precoCompra, precoVenda, quantidade, estoqueMinimo);
 
         if(id <=0){
@@ -56,11 +55,11 @@ public class Produto {
 
         return nome;
     }
-    public double getPrecoVenda(){
+    public BigDecimal getPrecoVenda(){
         return precoVenda;
 
     }
-    public double getPrecoCompra(){
+    public BigDecimal getPrecoCompra(){
         return precoCompra;
 
     }
@@ -107,8 +106,8 @@ public class Produto {
 
     }
 
-    public boolean alterarPrecos(double novoPrecoCompra, double novoPrecoVenda){
-        if(novoPrecoCompra > novoPrecoVenda || novoPrecoCompra <= 0 || novoPrecoVenda <= 0){
+    public boolean alterarPrecos(BigDecimal novoPrecoCompra, BigDecimal novoPrecoVenda){
+        if(novoPrecoCompra.compareTo(novoPrecoVenda) > 0 || novoPrecoCompra.compareTo(BigDecimal.ZERO) <= 0  || novoPrecoVenda.compareTo(BigDecimal.ZERO) <= 0 ){
             return false;
         }else{
             precoCompra = novoPrecoCompra;
@@ -117,16 +116,16 @@ public class Produto {
         }
     }
 
-    public boolean alterarPrecoCompra(double novoPrecoCompra){
-        if(novoPrecoCompra <= 0 || novoPrecoCompra > precoVenda){
+    public boolean alterarPrecoCompra(BigDecimal novoPrecoCompra){
+        if(novoPrecoCompra.compareTo(BigDecimal.ZERO) <= 0 || novoPrecoCompra.compareTo(precoVenda) > 0){
             return false;
         }
         this.precoCompra = novoPrecoCompra;
         return true;
     }
 
-    public boolean alterarPrecoVenda(double novoPrecoVenda){
-        if(novoPrecoVenda <= 0 || novoPrecoVenda < precoCompra){
+    public boolean alterarPrecoVenda(BigDecimal novoPrecoVenda){
+        if(novoPrecoVenda.compareTo(BigDecimal.ZERO) <= 0 || novoPrecoVenda.compareTo(precoCompra) < 0){
             return false;
         }
         this.precoVenda = novoPrecoVenda;
@@ -160,22 +159,23 @@ public class Produto {
         return true;
     }
 
-    public double valorTotalEmEstoque(){
-        return getQuantidade() * getPrecoVenda();
+    public BigDecimal valorTotalEmEstoque(){
+        
+        return getPrecoVenda().multiply(BigDecimal.valueOf(getQuantidade()));
 
     }
 
-    public double custoTotalEmEstoque(){
-        return getPrecoCompra() * getQuantidade();
+    public BigDecimal custoTotalEmEstoque(){
+        return getPrecoCompra().multiply(BigDecimal.valueOf(getQuantidade()));
 
     }
-    public double lucroProduto(){
-        return precoVenda - precoCompra;
+    public BigDecimal lucroProduto(){
+        return precoVenda.subtract(precoCompra);
 
     }
 
-    public double lucroTotalPossivel(){
-        return lucroProduto() * getQuantidade();
+    public BigDecimal lucroTotalPossivel(){
+        return lucroProduto().multiply(BigDecimal.valueOf(getQuantidade()));
 
     }
 }

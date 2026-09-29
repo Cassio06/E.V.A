@@ -51,16 +51,16 @@ import java.util.List;
 
             String nome = entrada.lerTexto("Nome do produto: ");
 
-            double precoPago = entrada.lerDoublePositivo("Preço de compra: ");
+            double precoCompra = entrada.lerDoublePositivo("Preço de compra: ");
 
             double precoVenda;
 
             do {
                 precoVenda = entrada.lerDoublePositivo("Preço de venda: ");
-                if (precoVenda < precoPago) {
+                if (precoVenda < precoCompra) {
                     System.out.println("O preço de venda não pode ser menor que o preço de compra.");
                 }
-            } while (precoVenda < precoPago);
+            } while (precoVenda < precoCompra);
 
             int quantidade = entrada.lerIntZeroOuPositivo("Quantidade: ");
 
@@ -68,7 +68,7 @@ import java.util.List;
 
 
 
-            Produto produto = new Produto(nome, precoPago, precoVenda, quantidade, estoqueMinimo);
+            Produto produto = new Produto(nome, precoCompra, precoVenda, quantidade, estoqueMinimo);
             boolean resultado = produtoRepository.inserir(produto);
             if (resultado){
                 System.out.println("Produto cadastrado com sucesso.");

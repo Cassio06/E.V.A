@@ -1,5 +1,6 @@
 package br.com.cassio.eva;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class EntradaConsole {
@@ -16,24 +17,7 @@ public class EntradaConsole {
             System.out.println("Entrada inválida. O texto não pode ficar vazio.");
         }
     }
-    public double lerDoublePositivo(String mensagem){
-        while(true){
-            System.out.print(mensagem);
-            String entrada = input.nextLine().trim().replace(",",".");
 
-            try{
-                double valor = Double.parseDouble(entrada);
-
-                if(valor > 0){
-                    return valor;
-                }
-                System.out.println("Valor inválido. Digite um número maior que zero.");
-
-            } catch(NumberFormatException e){
-                System.out.println("Entrada inválida. Digite um número válido.");
-            }
-        }
-    }
     public int lerIntPositivo(String mensagem){
         while(true){
             System.out.print(mensagem);
@@ -51,6 +35,57 @@ public class EntradaConsole {
             } catch(NumberFormatException e){
                 System.out.println("Entrada inválida. Digite um número inteiro válido.");
             }
+        }
+    }
+
+    public Integer lerIntPositivoOuCancelar(String mensagem){
+        while (true) {
+            System.out.print(mensagem);
+            String entrada = input.nextLine().trim();
+
+            if(isCancelar(entrada)){
+                return null;
+            }
+
+
+            try{
+                int valor = Integer.parseInt(entrada);
+
+                if (valor > 0){
+                    return valor;
+                }
+
+                System.out.println("Valor inválido. Digite um número inteiro maior que zero.");
+
+
+            }catch(NumberFormatException e){
+                System.out.println("Entrada inválida. Digite um número inteiro válido.");
+            }
+        }
+    }
+
+    public Integer lerIntZeroOuPositivoOpcional(String mensagem){
+        while(true) {
+            System.out.print(mensagem);
+            String entrada = input.nextLine().trim();
+
+            if (entrada.isEmpty()) {
+                return null;
+
+            }
+
+            try{
+                int valor = Integer.parseInt(entrada);
+
+                if(valor >= 0){
+                    return valor;
+                }
+                System.out.println("Valor inválido. Digite um número inteiro maior ou igual a zero.");
+
+            }catch(NumberFormatException e){
+                System.out.println("Entrada inválida. Digite um número inteiro válido.");
+            }
+
         }
     }
     public int lerIntZeroOuPositivo(String mensagem){
@@ -74,28 +109,23 @@ public class EntradaConsole {
         }
     }
 
-    private boolean isCancelar(String entrada){
-        return entrada.equalsIgnoreCase("cancelar") || entrada.equals("0");
-    }
-    public String lerTextoOuCancelar(String mensagem){
+    public double lerDoublePositivo(String mensagem){
         while(true){
             System.out.print(mensagem);
-            String entrada = input.nextLine().trim();
+            String entrada = input.nextLine().trim().replace(",",".");
 
-            if(isCancelar(entrada)){
-                return null;
+            try{
+                double valor = Double.parseDouble(entrada);
 
+                if(valor > 0){
+                    return valor;
+                }
+                System.out.println("Valor inválido. Digite um número maior que zero.");
+
+            } catch(NumberFormatException e){
+                System.out.println("Entrada inválida. Digite um número válido.");
             }
-
-            if(!entrada.isEmpty()){
-                return entrada;
-            }
-
-            System.out.println("Entrada inválida. O texto não pode ficar vazio.");
-
         }
-
-
     }
     public Double lerDoublePositivoOuCancelar(String mensagem){
         while (true) {
@@ -123,43 +153,6 @@ public class EntradaConsole {
             }
         }
     }
-    public Integer lerIntPositivoOuCancelar(String mensagem){
-        while (true) {
-            System.out.print(mensagem);
-            String entrada = input.nextLine().trim();
-
-            if(isCancelar(entrada)){
-                return null;
-            }
-
-
-            try{
-                int valor = Integer.parseInt(entrada);
-
-                if (valor > 0){
-                    return valor;
-                }
-
-                System.out.println("Valor inválido. Digite um número inteiro maior que zero.");
-
-
-            }catch(NumberFormatException e){
-                System.out.println("Entrada inválida. Digite um número inteiro válido.");
-            }
-        }
-    }
-    public String lerTextoOpcional(String mensagem){
-        System.out.print(mensagem);
-
-        String entrada = input.nextLine().trim();
-
-        if(entrada.isEmpty()){
-            return null;
-        }
-        return entrada;
-
-    }
-
     public Double lerDoublePositivoOpcional(String mensagem){
         while(true) {
             System.out.print(mensagem);
@@ -215,29 +208,110 @@ public class EntradaConsole {
 
         }
     }
-    public Integer lerIntZeroOuPositivoOpcional(String mensagem){
+
+
+    public BigDecimal lerBigDecimalPositivo(String mensagem){
         while(true) {
             System.out.print(mensagem);
-            String entrada = input.nextLine().trim();
 
-            if (entrada.isEmpty()) {
-                return null;
+            String entrada = input.nextLine().trim().replace(",", ".");
 
-            }
-            entrada = entrada.replace(",", ".");
+            try {
+                BigDecimal valor = new BigDecimal(entrada);
 
-            try{
-                int valor = Integer.parseInt(entrada);
-
-                if(valor >= 0){
+                if (valor.compareTo(BigDecimal.ZERO) > 0) {
                     return valor;
                 }
-                System.out.println("Valor inválido. Digite um número inteiro maior ou igual a zero.");
 
-            }catch(NumberFormatException e){
-                System.out.println("Entrada inválida. Digite um número inteiro válido.");
+                System.out.println("Valor Invalido. Digite um número maior que zero.");
+
+            } catch (NumberFormatException e) {
+
+                System.out.println("Entrada inválida. Digite um número válido.");
+
             }
 
         }
     }
+
+
+    public BigDecimal lerBigDecimalPositivoOpcionalOuCancelar(String mensagem){
+        while(true){
+
+            System.out.print(mensagem);
+
+            String entrada = input.nextLine().trim().replace(",", ".");
+
+            if (isCancelar(entrada)) {
+                return BigDecimal.ZERO;
+            }
+
+            if(entrada.isEmpty()){
+                return null;
+            }
+
+
+            try{
+
+                BigDecimal valor = new BigDecimal(entrada);
+
+                if(valor.compareTo(BigDecimal.ZERO) == 0){
+                    return BigDecimal.ZERO;
+                }
+
+                if(valor.compareTo(BigDecimal.ZERO) > 0){
+                    return valor;
+                }
+
+                System.out.println("Valor Invalido. Digite um número maior que zero.");
+
+            } catch(NumberFormatException e){
+
+                System.out.println("Entrada inválida. Digite um número válido.");
+
+            }
+
+        }
+
+    }
+
+    public String lerTextoOpcional(String mensagem){
+        System.out.print(mensagem);
+
+        String entrada = input.nextLine().trim();
+
+        if(entrada.isEmpty()){
+            return null;
+        }
+        return entrada;
+
+    }
+
+
+    private boolean isCancelar(String entrada){
+        return entrada.equalsIgnoreCase("cancelar") || entrada.equals("0");
+    }
+
+
+    public String lerTextoOuCancelar(String mensagem){
+        while(true){
+            System.out.print(mensagem);
+            String entrada = input.nextLine().trim();
+
+            if(isCancelar(entrada)){
+                return null;
+
+            }
+
+            if(!entrada.isEmpty()){
+                return entrada;
+            }
+
+            System.out.println("Entrada inválida. O texto não pode ficar vazio.");
+
+        }
+
+
+    }
+
 }
