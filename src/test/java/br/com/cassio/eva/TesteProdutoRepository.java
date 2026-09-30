@@ -1,5 +1,7 @@
 package br.com.cassio.eva;
 
+import java.math.BigDecimal;
+
 public class TesteProdutoRepository {
     public static void main(String[] args){
 
@@ -8,8 +10,8 @@ public class TesteProdutoRepository {
         Produto produto = new Produto(
                 1L,
                 "Teclado Mecânico",
-                249.90,
-                379.90,
+                new BigDecimal("249.90"),
+                new BigDecimal("379.90"),
                 0,
                 5
         );

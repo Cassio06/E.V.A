@@ -1,6 +1,7 @@
 package br.com.cassio.eva;
 
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
@@ -19,8 +20,8 @@ public class ProdutoRepository {
      PreparedStatement comando = conexao.prepareStatement(sql))
         {
             comando.setString(1, produto.getNome());
-            comando.setDouble(2, produto.getPrecoCompra());
-            comando.setDouble(3, produto.getPrecoVenda());
+            comando.setBigDecimal(2, produto.getPrecoCompra());
+            comando.setBigDecimal(3, produto.getPrecoVenda());
             comando.setInt(4, produto.getQuantidade());
             comando.setInt(5, produto.getEstoqueMinimo());
             int linhasAfetadas = comando.executeUpdate();
@@ -44,8 +45,8 @@ public class ProdutoRepository {
             while(resultado.next()){
                 long id = resultado.getLong("id");
                 String nome = resultado.getString("nome");
-                double precoCompra = resultado.getDouble("preco_compra");
-                double precoVenda = resultado.getDouble("preco_venda");
+                BigDecimal precoCompra = resultado.getBigDecimal("preco_compra");
+                BigDecimal precoVenda = resultado.getBigDecimal("preco_venda");
                 int quantidade = resultado.getInt("quantidade");
                 int estoqueMinimo = resultado.getInt("estoque_minimo");
                 Produto produto = new Produto(
@@ -77,8 +78,8 @@ public class ProdutoRepository {
                 if(resultado.next()){
                     long idEncontrado = resultado.getLong("id");
                     String nome = resultado.getString("nome");
-                    double precoCompra = resultado.getDouble("preco_compra");
-                    double precoVenda = resultado.getDouble("preco_venda");
+                    BigDecimal precoCompra = resultado.getBigDecimal("preco_compra");
+                    BigDecimal precoVenda = resultado.getBigDecimal("preco_venda");
                     int quantidade = resultado.getInt("quantidade");
                     int estoqueMinimo = resultado.getInt("estoque_minimo");
                     Produto produto = new Produto(idEncontrado,
@@ -124,8 +125,8 @@ public class ProdutoRepository {
         try(Connection conexao = ConexaoBanco.conectar();
         PreparedStatement comando = conexao.prepareStatement(sql)){
             comando.setString(1, produto.getNome());
-            comando.setDouble(2, produto.getPrecoCompra());
-            comando.setDouble(3, produto.getPrecoVenda());
+            comando.setBigDecimal(2, produto.getPrecoCompra());
+            comando.setBigDecimal(3, produto.getPrecoVenda());
             comando.setInt(4, produto.getEstoqueMinimo());
             comando.setLong(5, produto.getId());
             int linhasAfetadas = comando.executeUpdate();

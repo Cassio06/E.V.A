@@ -2,14 +2,16 @@ package br.com.cassio.eva;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ProdutoTest {
 
     @Test
     void deveReporProduto(){
-        Produto produto1 = new Produto("Mouse", 50.0, 80.0, 10, 2);
-        Produto produto2 = new Produto("Teclado", 100.0, 200.0, 10, 2);
+        Produto produto1 = new Produto("Mouse", new BigDecimal("10.00"), new BigDecimal("20.00"), 10, 2);
+        Produto produto2 = new Produto("Teclado", new BigDecimal("10.00"), new BigDecimal("20.00"), 10, 2);
 
 
         boolean conseguiuRepor = produto1.repor(5);
@@ -23,7 +25,7 @@ public class ProdutoTest {
 
     @Test
     void deveVenderProduto(){
-        Produto produto = new Produto("Mouse", 50, 80, 10, 2);
+        Produto produto = new Produto("Mouse",new BigDecimal("10.00"), new BigDecimal("20.00"), 10, 2);
 
 
         Produto.ResultadoVenda resultadoVenda = produto.vender(3);
@@ -37,7 +39,7 @@ public class ProdutoTest {
 
     @Test
     void deveRecusarVendaComEstoqueInsuficiente(){
-        Produto produto = new Produto("Mouse", 50, 80, 10, 2);
+        Produto produto = new Produto("Mouse",new BigDecimal("10.00"), new BigDecimal("20.00"), 10, 2);
 
         Produto.ResultadoVenda resultadoVenda = produto.vender(11);
 
@@ -47,7 +49,7 @@ public class ProdutoTest {
 
     @Test
     void deveRecusarVendaComNumeroInvalido(){
-        Produto produto = new Produto("Mouse", 50, 80, 10, 2);
+        Produto produto = new Produto("Mouse",new BigDecimal("10.00"), new BigDecimal("20.00"), 10, 2);
 
         Produto.ResultadoVenda resultadoVenda = produto.vender(0);
 

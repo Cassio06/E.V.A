@@ -1,5 +1,6 @@
 package br.com.cassio.eva;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -51,16 +52,16 @@ import java.util.List;
 
             String nome = entrada.lerTexto("Nome do produto: ");
 
-            double precoCompra = entrada.lerDoublePositivo("Preço de compra: ");
+            BigDecimal precoCompra = entrada.lerBigDecimalPositivo("Preço de compra: ");
 
-            double precoVenda;
+            BigDecimal precoVenda;
 
             do {
-                precoVenda = entrada.lerDoublePositivo("Preço de venda: ");
-                if (precoVenda < precoCompra) {
+                precoVenda = entrada.lerBigDecimalPositivo("Preço de venda: ");
+                if (precoVenda.compareTo(precoCompra) < 0) {
                     System.out.println("O preço de venda não pode ser menor que o preço de compra.");
                 }
-            } while (precoVenda < precoCompra);
+            } while (precoVenda.compareTo(precoCompra) < 0);
 
             int quantidade = entrada.lerIntZeroOuPositivo("Quantidade: ");
 
@@ -83,7 +84,9 @@ import java.util.List;
             Produto produtoVenda = null;
             Integer idProdutoVender = null;
             while (produtoVenda == null) {
-                listarProdutosResumido();
+                if(!listarProdutosResumido()){
+                    return;
+                }
                 idProdutoVender = entrada.lerIntPositivoOuCancelar("ID do produto para venda(Digite 0 para Cancelar): ");
                 if(idProdutoVender == null){
                     return;
@@ -127,7 +130,9 @@ import java.util.List;
 
         }
         private void reporProduto(){
-            listarProdutosResumido();
+            if(!listarProdutosResumido()){
+                return;
+            }
             Integer idProdutoEditar = entrada.lerIntPositivoOuCancelar("ID do produto que deseja repor(Pressione Zero para sair): ");
             if(idProdutoEditar == null){
                 return;
@@ -181,24 +186,24 @@ import java.util.List;
             exibirProdutoResumido(produtoEditar);
 
             String novoNome = entrada.lerTextoOpcional("Novo nome (pressione Enter para manter): ");
-            Double novoPrecoCompra;
-            Double novoPrecoVenda;
+            BigDecimal novoPrecoCompra;
+            BigDecimal novoPrecoVenda;
             Integer novoEstoqueMinimo;
 
 
 
             String nomeFinal;
 
-            double precoCompraFinal;
-            double precoVendaFinal;
+            BigDecimal precoCompraFinal;
+            BigDecimal precoVendaFinal;
             while(true){
 
-                novoPrecoCompra = entrada.lerDoublePositivoOpcionalOuCancelar("Novo preço de compra (pressione Enter para manter ou digite 0 para sair): ");
-                if(novoPrecoCompra != null && novoPrecoCompra == 0.0){
+                novoPrecoCompra = entrada.lerBigDecimalPositivoOpcionalOuCancelar("Novo preço de compra (pressione Enter para manter ou digite 0 para sair): ");
+                if(novoPrecoCompra != null && novoPrecoCompra.compareTo(BigDecimal.ZERO) == 0){
                     return;
                 }
-                novoPrecoVenda = entrada.lerDoublePositivoOpcionalOuCancelar("Novo preço de venda (pressione Enter para manter ou digite 0 para sair): ");
-                if(novoPrecoVenda != null && novoPrecoVenda == 0.0){
+                novoPrecoVenda = entrada.lerBigDecimalPositivoOpcionalOuCancelar("Novo preço de venda (pressione Enter para manter ou digite 0 para sair): ");
+                if(novoPrecoVenda != null && novoPrecoVenda.compareTo(BigDecimal.ZERO) == 0){
                     return;
                 }
 
@@ -214,7 +219,7 @@ import java.util.List;
                     precoVendaFinal = novoPrecoVenda;
                 }
 
-                if(precoCompraFinal > precoVendaFinal){
+                if(precoCompraFinal.compareTo(precoVendaFinal) > 0){
                     System.out.println("O preço de compra não pode ser maior que o preço de venda.");
                 } else{
                     break;
@@ -269,9 +274,9 @@ import java.util.List;
 
         private void exibirResumoGeral(){
             List<Produto> produtos = produtoRepository.listarAtivos();
-            double valorTotalDoEstoque = 0;
-            double custoTotalDoEstoque = 0;
-            double lucroTotalPossivelDoEstoque = 0;
+            BigDecimal valorTotalDoEstoque = BigDecimal.ZERO;
+            BigDecimal custoTotalDoEstoque = BigDecimal.ZERO;
+            BigDecimal lucroTotalPossivelDoEstoque = BigDecimal.ZERO;
             if(produtos.isEmpty()) {
                 System.out.println("Estoque vazio.");
                 return;
@@ -279,9 +284,9 @@ import java.util.List;
             }
 
             for (Produto produto : produtos) {
-                valorTotalDoEstoque += produto.valorTotalEmEstoque();
-                custoTotalDoEstoque += produto.custoTotalEmEstoque();
-                lucroTotalPossivelDoEstoque += produto.lucroTotalPossivel();
+                valorTotalDoEstoque = valorTotalDoEstoque.add(produto.valorTotalEmEstoque());
+                custoTotalDoEstoque = custoTotalDoEstoque.add(produto.custoTotalEmEstoque());
+                lucroTotalPossivelDoEstoque = lucroTotalPossivelDoEstoque.add(produto.lucroTotalPossivel());
 
             }
             System.out.println("===== RESUMO GERAL DO ESTOQUE =====");
