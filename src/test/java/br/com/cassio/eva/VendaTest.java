@@ -48,4 +48,19 @@ public class VendaTest {
 
 
     }
+    @Test
+    void deveManterItensQuandoListaOriginalForAlterada(){
+        List<ItemVenda> itens = new ArrayList<>();
+
+        ItemVenda item1 = new ItemVenda(1L, 2, BigDecimal.valueOf(200), BigDecimal.valueOf(300));
+
+        itens.add(item1);
+
+        Venda venda = new Venda(itens, 3L, BigDecimal.valueOf(600), LocalDateTime.now());
+
+        itens.clear();
+
+        assertEquals(0, BigDecimal.valueOf(400).compareTo(venda.calcularCustoTotal()));
+        assertEquals(0, BigDecimal.valueOf(200).compareTo(venda.calcularLucro()));
+    }
 }
